@@ -11,11 +11,13 @@ import Note from "../pages/Note";
 import Resume from "../pages/Resume";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import NotFound from "../pages/NotFound";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
