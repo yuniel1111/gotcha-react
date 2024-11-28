@@ -1,1 +1,0 @@
-header, footer와 같은 레이아웃을 위한 폴더
