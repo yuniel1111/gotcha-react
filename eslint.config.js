@@ -25,6 +25,11 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      eqeqeq: 'error',
+      'no-var': 'error',
+      'no-console': 'warn',
+      'object-shorthand': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
 );
