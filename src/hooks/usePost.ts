@@ -36,12 +36,12 @@ const fetchPost = async (url: string) => {
   return xmlToJson(xml);
 };
 
-export const usePost = (
+export const usePost = <T>(
   url: string,
   queryKey: string,
   queryOption: QueryType = DEFAULT_QUERY_OPTION,
 ) => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<T>({
     queryKey: [queryKey],
     queryFn: () => fetchPost(url),
     ...queryOption,

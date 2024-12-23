@@ -1,5 +1,5 @@
-export const QUERYKEY = {
-  POST_GOYONG: 'goyong',
-  POST_SARAMIN: 'saramin',
-  POST_JOBKOREA: 'jobkorea',
+export const QUERY_KEY = {
+  GOYONG: 'goyong',
+  SARAMIN: 'saramin',
+  JOBKOREA: 'jobkorea',
 };
