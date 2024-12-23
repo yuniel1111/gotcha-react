@@ -10,4 +10,5 @@ export default {
     ],
   },
   setupFiles: ['./jestSetup.ts'],
+  passWithNoTests: true,
 };
