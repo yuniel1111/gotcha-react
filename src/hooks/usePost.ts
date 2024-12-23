@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { SARAMIN_URL } from '../api/url';
 import { xml2js } from 'xml-js';
+import { POST_URL } from '../constants/postUrl';
 
 interface QueryType {
   staleTime?: number;
@@ -26,7 +26,7 @@ const xmlToJson = (xml: string) => {
 
 const fetchPost = async (url: string) => {
   // 사람인은 json 형식 데이터 제공
-  if (url === SARAMIN_URL) {
+  if (url === POST_URL.SARAMIN) {
     const post = (await axios.get(url)).data;
     return post;
   }
@@ -38,10 +38,11 @@ const fetchPost = async (url: string) => {
 
 export const usePost = (
   url: string,
+  queryKey: string,
   queryOption: QueryType = DEFAULT_QUERY_OPTION,
 ) => {
   const { data, isLoading, error } = useQuery({
-    queryKey: [url],
+    queryKey: [queryKey],
     queryFn: () => fetchPost(url),
     ...queryOption,
   });
