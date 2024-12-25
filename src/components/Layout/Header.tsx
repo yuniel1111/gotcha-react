@@ -1,5 +1,4 @@
 import logoImage from '../../assets/gotcha_logo.png';
-import { useNavigate } from 'react-router-dom';
 import {
   BiHome,
   BiBookmark,
@@ -8,28 +7,9 @@ import {
   BiUser,
   BiSliderAlt,
 } from 'react-icons/bi';
-import { useState } from 'react';
+import { NavType } from '../../types/navType';
 
-function Header() {
-  const [isActive, setIsActive] = useState<boolean[]>(() => {
-    const savedNavActiveState = localStorage.getItem('navActiveState');
-    return savedNavActiveState
-      ? JSON.parse(savedNavActiveState)
-      : [true, false, false, false, false];
-  });
-
-  const navigate = useNavigate();
-
-  const handleNavMenuClick = (url: string, clickedIdx: number) => {
-    navigate(url);
-    const newActive = isActive.map((_, idx) =>
-      idx === clickedIdx ? true : false,
-    );
-
-    setIsActive(newActive);
-    localStorage.setItem('navActiveState', JSON.stringify(newActive));
-  };
-
+function Header({ isActive, handleNavMenuClick }: NavType) {
   return (
     <header className='relative h-[60px] border border-b-brand-gray-1 flex items-center px-3 justify-end md:justify-between md:static'>
       <div
