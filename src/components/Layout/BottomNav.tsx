@@ -9,7 +9,7 @@ import { NavType } from '../../types/navType';
 
 function BottomNav({ isActive, handleNavMenuClick }: NavType) {
   return (
-    <nav className='shadow fixed bottom-0 w-full md:hidden'>
+    <nav className='shadow-2xl fixed bottom-0 w-full md:hidden'>
       <ul className='flex justify-between gap-1'>
         <li
           className={`cursor-pointer px-2 py-3 flex flex-col items-center ${isActive[0] ? 'text-brand-sub' : 'text-brand-black'}`}

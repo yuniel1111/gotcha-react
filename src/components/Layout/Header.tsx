@@ -6,6 +6,7 @@ import {
   BiFileBlank,
   BiUser,
   BiSliderAlt,
+  BiChevronLeft,
 } from 'react-icons/bi';
 import { NavType } from '../../types/navType';
 
@@ -19,8 +20,14 @@ function Header({ isActive, handleNavMenuClick }: NavType) {
       >
         <img src={logoImage} alt='GOTCHA' className='w-25 h-4' />
       </div>
-      <nav>
-        <ul className='flex gap-1'>
+      <nav className='w-full md:w-auto'>
+        <ul className='flex gap-1 justify-between md:justify-normal'>
+          {
+            // 특정 페이지에서만 뒤로가기 표출 (의논 필요)
+          }
+          <li className='cursor-pointer px-2 py-3 md:hidden'>
+            <BiChevronLeft className='w-[20px] h-[20px]' />
+          </li>
           <li
             className='cursor-pointer px-2 py-3 hidden md:block'
             onClick={() => handleNavMenuClick('/', 0)}
@@ -65,7 +72,7 @@ function Header({ isActive, handleNavMenuClick }: NavType) {
             />
           </li>
           {
-            // 필터는 페이지 이동이 없기때문에 별도로 관리
+            // 필터는 페이지 이동이 아닌 모달 형태이기 때문에 별도로 관리
           }
           <li className='cursor-pointer px-2 py-3'>
             <BiSliderAlt className='w-[20px] h-[20px]' />
