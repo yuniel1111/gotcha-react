@@ -5,23 +5,22 @@ import NavMenus from './NavMenus';
 
 function Header({ isActive, handleNavMenuClick }: NavType) {
   return (
-    <header className='relative h-[60px] border border-b-brand-gray-1 flex items-center px-3 justify-end sm:justify-between sm:static'>
+    <header className='relative flex h-[60px] items-center justify-end border border-b-brand-gray-1 sm:static sm:justify-between'>
       <div
-        className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-pointer 
-               sm:static sm:transform-none sm:-translate-x-0 sm:-translate-y-0'
+        className='absolute left-1/2 top-1/2 ml-4 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer sm:static sm:-translate-x-0 sm:-translate-y-0 sm:transform-none'
         onClick={() => handleNavMenuClick('/', 0)}
       >
         <img src={logoImage} alt='GOTCHA' className='w-25 h-4' />
       </div>
       <div className='flex h-[60px]'>
-        <nav className='hidden sm:flex items-center'>
+        <nav className='hidden items-center sm:flex'>
           <NavMenus
             isActive={isActive}
             handleNavMenuClick={handleNavMenuClick}
           />
         </nav>
-        <div className='flex flex-col h-[60px] w-[60px] items-center justify-center'>
-          <BiSliderAlt className='w-[20px] h-[20px]' />
+        <div className='flex h-[60px] w-[60px] flex-col items-center justify-center'>
+          <BiSliderAlt className='h-[20px] w-[20px]' />
           <span className='text-[10px]'>Filter</span>
         </div>
       </div>

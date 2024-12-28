@@ -13,6 +13,9 @@ export default {
         'brand-gray-3': '#AFAFAF',
         'brand-gray-4': '#696969',
       },
+      boxShadow: {
+        'brand-main-shadow': '0 3px 10px rgba(0, 0, 0, 0.2)',
+      },
     },
   },
   plugins: [],

@@ -4,59 +4,114 @@ import {
   BiEditAlt,
   BiFileBlank,
   BiUser,
+  BiSolidHome,
+  BiSolidBookmark,
+  BiSolidEditAlt,
+  BiSolidFileBlank,
+  BiSolidUser,
 } from 'react-icons/bi';
 import { NavType } from '../../types/navType';
 
 function NavMenus({ isActive, handleNavMenuClick }: NavType) {
   return (
-    <ul className='flex gap-1 h-[60px] justify-between items-center sm:justify-normal'>
+    <ul className='flex h-[60px] items-center justify-between gap-1 font-bold sm:justify-normal'>
       <li
-        className={`w-[60px] h-full cursor-pointer flex flex-col justify-center items-center ${isActive[0] ? 'text-brand-sub' : 'text-brand-black'}`}
+        className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[0] ? 'text-brand-sub' : 'text-brand-black'}`}
         onClick={() => handleNavMenuClick('/', 0)}
       >
-        <BiHome
-          className={`w-[20px] h-[20px] ${isActive[0] ? 'text-brand-sub' : 'text-brand-black'}`}
-        />
-        <span className='text-[10px]'>Home</span>
+        {isActive[0] ? (
+          <BiSolidHome
+            className={`h-[20px] w-[20px] ${isActive[0] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        ) : (
+          <BiHome
+            className={`h-[20px] w-[20px] ${isActive[0] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        )}
+        <span
+          className={`text-[10px] ${isActive[0] ? 'text-brand-main' : 'text-brand-black'}`}
+        >
+          Home
+        </span>
       </li>
       <li
-        className={`w-[60px] h-full cursor-pointer flex flex-col justify-center items-center ${isActive[1] ? 'text-brand-sub' : 'text-brand-black'}`}
+        className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[1] ? 'text-brand-sub' : 'text-brand-black'}`}
         onClick={() => handleNavMenuClick('/bookmark', 1)}
       >
-        <BiBookmark
-          className={`w-[20px] h-[20px] ${isActive[1] ? 'text-brand-sub' : 'text-brand-black'}`}
-        />
-        <span className='text-[10px]'>Bookmark</span>
+        {isActive[1] ? (
+          <BiSolidBookmark
+            className={`h-[20px] w-[20px] ${isActive[1] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        ) : (
+          <BiBookmark
+            className={`h-[20px] w-[20px] ${isActive[1] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        )}
+        <span
+          className={`text-[10px] ${isActive[1] ? 'text-brand-main' : 'text-brand-black'}`}
+        >
+          Bookmark
+        </span>
       </li>
       <li
-        className={`w-[60px] h-full cursor-pointer flex flex-col justify-center items-center ${isActive[2] ? 'text-brand-sub' : 'text-brand-black'}`}
+        className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[2] ? 'text-brand-sub' : 'text-brand-black'}`}
         onClick={() => handleNavMenuClick('/note', 2)}
       >
-        <BiEditAlt
-          className={`w-[20px] h-[20px] ${isActive[2] ? 'text-brand-sub' : 'text-brand-black'}`}
-        />
-        <span className='text-[10px]'>Memo</span>
+        {isActive[2] ? (
+          <BiSolidEditAlt
+            className={`h-[20px] w-[20px] ${isActive[2] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        ) : (
+          <BiEditAlt
+            className={`h-[20px] w-[20px] ${isActive[2] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        )}
+        <span
+          className={`text-[10px] ${isActive[2] ? 'text-brand-main' : 'text-brand-black'}`}
+        >
+          Memo
+        </span>
       </li>
       <li
-        className={`w-[60px] h-full cursor-pointer flex flex-col justify-center items-center ${isActive[3] ? 'text-brand-sub' : 'text-brand-black'}`}
+        className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[3] ? 'text-brand-sub' : 'text-brand-black'}`}
         onClick={() => handleNavMenuClick('/resume', 3)}
       >
-        <BiFileBlank
-          className={`w-[20px] h-[20px] ${isActive[3] ? 'text-brand-sub' : 'text-brand-black'}`}
-        />
-        <span className='text-[10px]'>Resume</span>
+        {isActive[3] ? (
+          <BiSolidFileBlank
+            className={`h-[20px] w-[20px] ${isActive[3] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        ) : (
+          <BiFileBlank
+            className={`h-[20px] w-[20px] ${isActive[3] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        )}
+        <span
+          className={`text-[10px] ${isActive[3] ? 'text-brand-main' : 'text-brand-black'}`}
+        >
+          Resume
+        </span>
       </li>
       {
         // 유저가 로그인 상태면 마이페이지("/my-page")로 이동하고, 로그아웃 상태면 로그인("/sign-in") 페이지로 이동
       }
       <li
-        className={`w-[60px] h-full cursor-pointer flex flex-col justify-center items-center ${isActive[4] ? 'text-brand-sub' : 'text-brand-black'}`}
+        className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[4] ? 'text-brand-sub' : 'text-brand-black'}`}
         onClick={() => handleNavMenuClick('/sign-in', 4)}
       >
-        <BiUser
-          className={`w-[20px] h-[20px] ${isActive[4] ? 'text-brand-sub' : 'text-brand-black'}`}
-        />
-        <span className='text-[10px]'>My Page</span>
+        {isActive[4] ? (
+          <BiSolidUser
+            className={`h-[20px] w-[20px] ${isActive[4] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        ) : (
+          <BiUser
+            className={`h-[20px] w-[20px] ${isActive[4] ? 'text-brand-main' : 'text-brand-black'}`}
+          />
+        )}
+        <span
+          className={`text-[10px] ${isActive[4] ? 'text-brand-main' : 'text-brand-black'}`}
+        >
+          My Page
+        </span>
       </li>
     </ul>
   );
