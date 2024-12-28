@@ -14,8 +14,17 @@ function Layout() {
 
   const navigate = useNavigate();
 
-  const handleNavMenuClick = (url: string, clickedIdx: number) => {
-    navigate(url);
+  const setActiveMenu = (url: string) => {
+    const clickedIdxList = {
+      '/': 0,
+      '/bookmark': 1,
+      '/note': 2,
+      '/resume': 3,
+      '/sign-in': 4,
+    };
+
+    const clickedIdx = clickedIdxList[url as keyof typeof clickedIdxList];
+
     const newActive = isActive.map((_, idx) =>
       idx === clickedIdx ? true : false,
     );
@@ -24,9 +33,18 @@ function Layout() {
     localStorage.setItem('navActiveState', JSON.stringify(newActive));
   };
 
+  const handleNavMenuClick = (url: string) => {
+    navigate(url);
+    setActiveMenu(url);
+  };
+
   return (
     <>
-      <Header isActive={isActive} handleNavMenuClick={handleNavMenuClick} />
+      <Header
+        isActive={isActive}
+        handleNavMenuClick={handleNavMenuClick}
+        setActiveMenu={setActiveMenu}
+      />
       <Outlet />
       <BottomNav isActive={isActive} handleNavMenuClick={handleNavMenuClick} />
     </>

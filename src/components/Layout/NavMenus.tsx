@@ -17,7 +17,7 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
     <ul className='flex h-[60px] items-center justify-between gap-1 font-bold sm:justify-normal'>
       <li
         className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[0] ? 'text-brand-sub' : 'text-brand-black'}`}
-        onClick={() => handleNavMenuClick('/', 0)}
+        onClick={() => handleNavMenuClick('/')}
       >
         {isActive[0] ? (
           <BiSolidHome
@@ -36,7 +36,7 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
       </li>
       <li
         className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[1] ? 'text-brand-sub' : 'text-brand-black'}`}
-        onClick={() => handleNavMenuClick('/bookmark', 1)}
+        onClick={() => handleNavMenuClick('/bookmark')}
       >
         {isActive[1] ? (
           <BiSolidBookmark
@@ -55,7 +55,7 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
       </li>
       <li
         className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[2] ? 'text-brand-sub' : 'text-brand-black'}`}
-        onClick={() => handleNavMenuClick('/note', 2)}
+        onClick={() => handleNavMenuClick('/note')}
       >
         {isActive[2] ? (
           <BiSolidEditAlt
@@ -74,7 +74,7 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
       </li>
       <li
         className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[3] ? 'text-brand-sub' : 'text-brand-black'}`}
-        onClick={() => handleNavMenuClick('/resume', 3)}
+        onClick={() => handleNavMenuClick('/resume')}
       >
         {isActive[3] ? (
           <BiSolidFileBlank
@@ -96,7 +96,7 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
       }
       <li
         className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${isActive[4] ? 'text-brand-sub' : 'text-brand-black'}`}
-        onClick={() => handleNavMenuClick('/sign-in', 4)}
+        onClick={() => handleNavMenuClick('/sign-in')}
       >
         {isActive[4] ? (
           <BiSolidUser
