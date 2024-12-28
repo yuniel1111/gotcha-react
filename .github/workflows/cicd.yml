@@ -34,7 +34,7 @@ jobs:
         run: yarn
 
       - name: testing with jest
-        run: yarn jest --coverage --ci --passWithNoTests
+        run: yarn jest --passWithNoTests
 
       - name: build
         run: yarn build
