@@ -1,10 +1,9 @@
-import { NavType } from '../../types/navType';
 import NavMenus from './MenuList';
 
-function BottomNav({ isActive, handleNavMenuClick }: NavType) {
+function BottomNav() {
   return (
     <nav className='shadow-brand-main-shadow fixed bottom-0 w-full sm:hidden'>
-      <NavMenus isActive={isActive} handleNavMenuClick={handleNavMenuClick} />
+      <NavMenus />
     </nav>
   );
 }

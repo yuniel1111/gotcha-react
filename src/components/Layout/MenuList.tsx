@@ -10,8 +10,8 @@ import {
   BiSolidFileBlank,
   BiSolidUser,
 } from 'react-icons/bi';
-import { NavType } from '../../types/navType';
 import MenuItem from './MenuItem';
+import { useNavigateStore } from '../../stores/useNavigateStore';
 
 const menuItems = [
   { path: '/', label: 'Home', Icon: BiHome, ActiveIcon: BiSolidHome },
@@ -41,7 +41,8 @@ const menuItems = [
   },
 ];
 
-function NavMenus({ isActive, handleNavMenuClick }: NavType) {
+function NavMenus() {
+  const isActive = useNavigateStore((state) => state.isActive);
   return (
     <ul className='flex h-[60px] items-center justify-between gap-1 font-bold sm:justify-normal'>
       {menuItems.map((menu, idx) => (
@@ -52,7 +53,6 @@ function NavMenus({ isActive, handleNavMenuClick }: NavType) {
           isActive={isActive[idx]}
           Icon={menu.Icon}
           ActiveIcon={menu.ActiveIcon}
-          handleClick={handleNavMenuClick}
         />
       ))}
     </ul>
