@@ -1,5 +1,5 @@
 import { NavType } from '../../types/navType';
-import NavMenus from './NavMenus';
+import NavMenus from './MenuList';
 
 function BottomNav({ isActive, handleNavMenuClick }: NavType) {
   return (

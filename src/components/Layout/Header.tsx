@@ -1,7 +1,7 @@
 import logoImage from '../../assets/gotcha_logo.png';
 import { BiChevronLeft, BiSliderAlt } from 'react-icons/bi';
 import { NavType } from '../../types/navType';
-import NavMenus from './NavMenus';
+import NavMenus from './MenuList';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
