@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigateStore } from '../../stores/useNavigateStore';
 
-function Header({ isFilterExists }: { isFilterExists: boolean }) {
+function Header() {
   const { setActiveMenu, handleNavMenuClick } = useNavigateStore(
     (state) => state.actions,
   );
@@ -59,7 +59,7 @@ function Header({ isFilterExists }: { isFilterExists: boolean }) {
       {
         // Filter 슬라이드 부분
       }
-      {isFilterOpen && isFilterExists && (
+      {isFilterOpen && (
         <div
           className='absolute left-0 top-full h-[60px] w-full bg-brand-black'
           role='filter-slide'
