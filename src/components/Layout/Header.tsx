@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigateStore } from '../../stores/useNavigateStore';
 
-function Header() {
+function Header({ isFilterExists }: { isFilterExists: boolean }) {
   const { setActiveMenu, handleNavMenuClick } = useNavigateStore(
     (state) => state.actions,
   );
