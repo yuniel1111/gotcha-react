@@ -18,20 +18,13 @@ const clickedIdxList = {
 };
 
 export const useNavigateStore = create<NavigateType>((set) => ({
-  isActive: (() => {
-    const savedNavActiveState = localStorage.getItem('navActiveState');
-    return savedNavActiveState
-      ? JSON.parse(savedNavActiveState)
-      : [true, false, false, false, false];
-  })(),
+  isActive: [true, false, false, false, false],
 
   actions: {
     setActiveMenu: (url: string) =>
       set((state) => {
         const clickedIdx = clickedIdxList[url as keyof typeof clickedIdxList];
         const newActive = state.isActive.map((_, idx) => idx === clickedIdx);
-
-        localStorage.setItem('navActiveState', JSON.stringify(newActive));
         return { isActive: newActive };
       }),
 

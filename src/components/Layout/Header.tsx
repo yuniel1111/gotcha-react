@@ -15,7 +15,7 @@ function Header({ isFilterExists }: { isFilterExists: boolean }) {
 
   const isFilterOpen =
     location.pathname === '/' || location.pathname === '/bookmark';
-  const isGoBackOpen = location.pathname !== '/';
+  const isGoBackOpen = location.key !== 'default';
 
   useEffect(() => {
     setActiveMenu(location.pathname);
@@ -60,7 +60,10 @@ function Header({ isFilterExists }: { isFilterExists: boolean }) {
         // Filter 슬라이드 부분
       }
       {isFilterOpen && isFilterExists && (
-        <div className='absolute left-0 top-full h-[60px] w-full bg-brand-black'></div>
+        <div
+          className='absolute left-0 top-full h-[60px] w-full bg-brand-black'
+          role='filter-slide'
+        ></div>
       )}
     </header>
   );
