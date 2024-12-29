@@ -59,7 +59,7 @@ function Header({ isFilterExists }: { isFilterExists: boolean }) {
       {
         // Filter 슬라이드 부분
       }
-      {isFilterOpen && (
+      {isFilterOpen && isFilterExists && (
         <div
           className='absolute left-0 top-full h-[60px] w-full bg-brand-black'
           role='filter-slide'
