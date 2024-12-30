@@ -8,7 +8,7 @@ describe('Render Test', () => {
   test('Header가 정상적으로 렌더링되어야 한다', () => {
     render(
       <MemoryRouter>
-        <Header isFilterExists={false} />
+        <Header isFilterExists={false} isFilterOpen={true} />
       </MemoryRouter>,
     );
     const logoImage = screen.getByAltText(/gotcha/i);
@@ -22,7 +22,7 @@ describe('Render Test', () => {
     pathList.forEach((path) => {
       render(
         <MemoryRouter initialEntries={[path]}>
-          <Header isFilterExists={false} />
+          <Header isFilterExists={false} isFilterOpen={true} />
         </MemoryRouter>,
       );
 
@@ -40,7 +40,7 @@ describe('Render Test', () => {
     pathList.forEach((path) => {
       render(
         <MemoryRouter initialEntries={[path]}>
-          <Header isFilterExists={true} />
+          <Header isFilterExists={true} isFilterOpen={true} />
         </MemoryRouter>,
       );
 
@@ -54,7 +54,7 @@ describe('Render Test', () => {
   test('모바일에서 첫 페이지를 제외하고는 뒤로가기 버튼이 생겨야 한다', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
-        <Header isFilterExists={true} />
+        <Header isFilterExists={true} isFilterOpen={true} />
       </MemoryRouter>,
     );
   });
@@ -65,7 +65,7 @@ describe('Navigation Test', () => {
   test('로고를 클릭하면 Home으로 이동해야 한다', () => {
     render(
       <MemoryRouter>
-        <Header isFilterExists={true} />
+        <Header isFilterExists={true} isFilterOpen={true} />
       </MemoryRouter>,
     );
 
@@ -80,7 +80,7 @@ describe('Navigation Test', () => {
   test('모바일에서 뒤로가기 버튼을 클릭하면 이전 페이지로 이동해야 한다', () => {
     render(
       <MemoryRouter>
-        <Header isFilterExists={true} />
+        <Header isFilterExists={true} isFilterOpen={true} />
       </MemoryRouter>,
     );
   });

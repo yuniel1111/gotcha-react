@@ -5,16 +5,18 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useNavigateStore } from '../../stores/useNavigateStore';
 
-function Header({ isFilterExists }: { isFilterExists: boolean }) {
+interface HeaderType {
+  isFilterExists: boolean;
+  isFilterOpen: boolean;
+}
+
+function Header({ isFilterExists, isFilterOpen }: HeaderType) {
   const { setActiveMenu, handleNavMenuClick } = useNavigateStore(
     (state) => state.actions,
   );
 
   const location = useLocation();
   const navigate = useNavigate();
-
-  const isFilterOpen =
-    location.pathname === '/' || location.pathname === '/bookmark';
   const isGoBackOpen = location.key !== 'default';
 
   useEffect(() => {
