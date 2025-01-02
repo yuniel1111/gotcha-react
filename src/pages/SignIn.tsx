@@ -1,7 +1,6 @@
+import { Link } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
-import kakaoLogoImage from '../assets/kakao_logo.png';
-import googleLogoImage from '../assets/google_logo.png';
-import githubLogoImage from '../assets/github_logo.png';
+import SocialLogin from '../components/User/SocialLogin';
 
 function SignIn() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -10,7 +9,7 @@ function SignIn() {
 
   return (
     <main className='flex flex-col items-center'>
-      <div className='mt-[60px]'>
+      <div className='mt-[60px] hidden sm:block'>
         <img
           src={gotchaLogoImage}
           alt='GOTCHA'
@@ -20,15 +19,17 @@ function SignIn() {
 
       <form
         onSubmit={handleSubmit}
-        className='mt-[60px] w-[450px] rounded-xl p-9 shadow-brand-main-shadow'
+        className='w-[400px] rounded-xl p-9 sm:mt-[60px] sm:shadow-brand-main-shadow'
       >
         <div className='flex justify-center'>
-          <h1 className='w-[140px] border-b-4 border-brand-main pb-1 text-center text-lg font-bold text-brand-main'>
+          <h1 className='w-[120px] border-b-4 border-brand-main pb-1 text-center text-lg font-bold text-brand-main'>
             로그인
           </h1>
-          <h1 className='w-[140px] text-center text-lg font-bold text-brand-gray-2'>
-            회원가입
-          </h1>
+          <Link to='/sign-up'>
+            <h1 className='w-[120px] cursor-pointer text-center text-lg font-bold text-brand-gray-2'>
+              회원가입
+            </h1>
+          </Link>
         </div>
 
         <div className='mt-8'>
@@ -46,17 +47,7 @@ function SignIn() {
           />
         </div>
 
-        <div className='mt-4 flex gap-4'>
-          <div className='flex items-center gap-1'>
-            <input
-              type='checkbox'
-              id='keepLogin'
-              className='accent-brand-main'
-            />
-            <label htmlFor='keepLogin' className='text-sm text-brand-gray-4'>
-              로그인 유지
-            </label>
-          </div>
+        <div className='mt-4'>
           <div className='flex items-center gap-1'>
             <input type='checkbox' id='saveId' className='accent-brand-main' />
             <label htmlFor='saveId' className='text-sm text-brand-gray-4'>
@@ -72,30 +63,16 @@ function SignIn() {
         </div>
 
         <div className='mt-4 flex items-center justify-center gap-1 text-sm text-brand-gray-4'>
-          <button type='button'>아이디 찾기</button>
+          <Link to='/find-id'>
+            <button type='button'>아이디 찾기</button>
+          </Link>
           <div className='mx-1 h-4 w-[1px] bg-brand-gray-4'></div>
-          <button type='button'>비밀번호 찾기</button>
+          <Link to='/find-password'>
+            <button type='button'>비밀번호 찾기</button>
+          </Link>
         </div>
 
-        <div className='mt-8 flex items-center justify-between'>
-          <div className='h-[1px] w-[100px] bg-brand-gray-4'></div>
-          <p className='text-sm text-brand-gray-4'>소셜 계정으로 간편 로그인</p>
-          <div className='h-[1px] w-[100px] bg-brand-gray-4'></div>
-        </div>
-
-        <div className='mt-8 flex justify-center gap-3'>
-          <img src={kakaoLogoImage} alt='KAKAO' className='h-[50px] w-[50px]' />
-          <img
-            src={googleLogoImage}
-            alt='GOOGLE'
-            className='h-[50px] w-[50px]'
-          />
-          <img
-            src={githubLogoImage}
-            alt='GITHUB'
-            className='h-[50px] w-[50px]'
-          />
-        </div>
+        <SocialLogin />
       </form>
     </main>
   );

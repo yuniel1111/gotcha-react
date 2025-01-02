@@ -15,6 +15,8 @@ const clickedIdxList = {
   '/note': 2,
   '/resume': 3,
   '/sign-in': 4,
+  '/sign-up': 4,
+  '/my-page': 4,
 };
 
 export const useNavigateStore = create<NavigateType>((set) => ({
