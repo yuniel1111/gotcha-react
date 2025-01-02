@@ -36,4 +36,21 @@
   .brand-main-input:focus {
     @apply outline-2 outline-brand-sub;
   }
+
+  .page-title {
+    @apply text-[28px] font-bold
+  }
+
+  .response-padding {
+    padding: 0 24px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .response-padding {
+      padding: 0 24px 80px;
+      width: 90%;
+    }
+  }
 }
