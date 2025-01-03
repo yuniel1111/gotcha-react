@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
 import SocialLoginList from '../components/User/SocialLoginList';
+import { useState } from 'react';
 
 function SignIn() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [error, setError] = useState(false);
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // supabase에 들러서 아이디 비밀번호가 일치하는지 확인한 뒤에 error 상태 변경
+    setError(true);
   };
 
   return (
@@ -18,7 +23,7 @@ function SignIn() {
       </div>
 
       <form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         className='w-[400px] rounded-xl p-9 sm:mt-[60px] sm:shadow-brand-main-shadow'
       >
         <div className='flex justify-center'>
@@ -35,7 +40,7 @@ function SignIn() {
         <div className='mt-8'>
           <input
             type='text'
-            placeholder='아이디'
+            placeholder='이메일'
             className='brand-main-input w-full'
           />
         </div>
@@ -55,6 +60,12 @@ function SignIn() {
             </label>
           </div>
         </div>
+
+        {error && (
+          <p className='mt-4 text-sm text-red-500'>
+            이메일 또는 비밀번호를 확인해주세요.
+          </p>
+        )}
 
         <div className='mt-4'>
           <button type='submit' className='brand-main-button w-full'>
