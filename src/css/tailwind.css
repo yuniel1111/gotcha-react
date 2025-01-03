@@ -38,19 +38,36 @@
   }
 
   .page-title {
-    @apply text-[28px] font-bold
+    @apply text-[1.5rem] font-bold py-4
   }
 
-  .response-padding {
+  .response-page-padding {
     padding: 0 24px;
     width: 100%;
     margin: 0 auto;
-  }
 
-  @media (min-width: 768px) {
-    .response-padding {
+    @media (min-width: 768px) {
       padding: 0 24px 80px;
       width: 90%;
+    }
+  }
+
+  .responsive-post-width {
+    width: 25%;
+
+    /* 1600px 이상일 때 */
+    @media (min-width: 1600px) {
+      width: 20%; 
+    }
+
+    /* 768px ~ 991px 사이일 때 */
+    @media (min-width: 768px) and (max-width: 991px) {
+      width: 33.3%; 
+    }
+
+    /* 767px 이하일 때 */
+    @media (max-width: 767px) {
+      width: 50%;
     }
   }
 }
