@@ -12,14 +12,13 @@ function Layout() {
   const isFilterExists = true;
   const isFilterOpen =
     location.pathname === '/' || location.pathname === '/bookmark';
-
   const { setUserLogin, setUserSession } = useUserStore(
     (state) => state.actions,
   );
 
   useEffect(() => {
     // supabase를 통해 소셜 로그인한 유저의 Session 값 세팅
-    const handleUserLogin = async () => {
+    const saveSession = async () => {
       const { data } = await supabase.auth.getSession();
 
       if (data?.session) {
@@ -28,7 +27,7 @@ function Layout() {
       }
     };
 
-    handleUserLogin();
+    saveSession();
   }, [setUserLogin, setUserSession]);
 
   return (
