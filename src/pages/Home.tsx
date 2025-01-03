@@ -1,6 +1,7 @@
 import '../css/tailwind.css';
 import saraminBanner from '../assets/saramin_banner.jpeg'
 import JobOpeningCard from '../components/Post/JobOpeningCard';
+import SortDropdownMenu from '../components/Post/SortDropdownMenu';
 
 function Home() {
 
@@ -11,7 +12,10 @@ function Home() {
           <img className='rounded-lg' src={saraminBanner} alt="saramin banner" />
         </a>
       </section>
-      <h1 className='page-title'>채용공고</h1>
+      <div className='flex justify-between'>
+        <h1 className='page-title'>채용공고</h1>
+        <SortDropdownMenu />
+      </div>
       <section className='flex flex-wrap'>
       {
         Array.from({length: 5}).map((_, idx) => 
