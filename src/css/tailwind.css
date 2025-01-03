@@ -18,19 +18,19 @@
 
 @layer components {
   .brand-main-button {
-    @apply bg-brand-main border border-brand-main text-brand-white rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-main bg-brand-main py-[10px] font-bold text-brand-white;
   }
 
   .brand-sub-button {
-    @apply bg-brand-white border border-brand-black text-brand-black rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-black bg-brand-white py-[10px] font-bold text-brand-black;
   }
 
   .brand-confirm-button {
-    @apply bg-brand-sub border border-brand-sub text-brand-white rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-sub bg-brand-sub py-[10px] font-bold text-brand-white;
   }
 
   .brand-main-input {
-    @apply border border-brand-gray-4 rounded-md text-[16px] px-[12px] py-[8px];
+    @apply rounded-md border border-brand-gray-4 px-[12px] py-[10px] text-[16px] placeholder:text-sm;
   }
 
   .brand-main-input:focus {
