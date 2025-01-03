@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
-import SocialLogin from '../components/User/SocialLogin';
+import SocialLoginList from '../components/User/SocialLoginList';
 
 function SignIn() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -72,7 +72,7 @@ function SignIn() {
           </Link>
         </div>
 
-        <SocialLogin />
+        <SocialLoginList />
       </form>
     </main>
   );

@@ -12,6 +12,7 @@ interface MenuItemType {
 function MenuItem({ path, label, isActive, Icon, ActiveIcon }: MenuItemType) {
   const { handleNavMenuClick } = useNavigateStore((state) => state.actions);
   const navigate = useNavigate();
+
   return (
     <li
       className={`flex h-full w-[60px] cursor-pointer flex-col items-center justify-center ${
