@@ -2,6 +2,9 @@ import { Outlet } from 'react-router-dom';
 import Header from '../components/Layout/Header';
 import BottomNav from '../components/Layout/BottomNav';
 import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { supabase } from '../api/supabase/supabaseClient';
+import { useUserStore } from '../stores/useUserStore';
 
 function Layout() {
   const location = useLocation();
@@ -9,6 +12,24 @@ function Layout() {
   const isFilterExists = true;
   const isFilterOpen =
     location.pathname === '/' || location.pathname === '/bookmark';
+
+  const { setUserLogin, setUserSession } = useUserStore(
+    (state) => state.actions,
+  );
+
+  useEffect(() => {
+    // supabase를 통해 소셜 로그인한 유저의 Session 값 세팅
+    const handleUserLogin = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (data?.session) {
+        setUserLogin(true);
+        setUserSession(data.session);
+      }
+    };
+
+    handleUserLogin();
+  }, [setUserLogin, setUserSession]);
 
   return (
     <>
