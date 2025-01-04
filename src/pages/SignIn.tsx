@@ -20,7 +20,7 @@ function SignIn() {
   const { register, handleSubmit } = useForm<FormDataType>();
 
   return (
-    <main className='flex flex-col items-center py-[60px]'>
+    <main className='flex flex-col items-center pb-[60px] sm:pt-[60px]'>
       <div className='hidden sm:block'>
         <img
           src={gotchaLogoImage}
