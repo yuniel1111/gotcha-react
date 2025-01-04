@@ -24,7 +24,7 @@ function Header({ isFilterExists, isFilterOpen }: HeaderType) {
   }, [location.pathname]);
 
   return (
-    <header className='fixed top-0 z-50 flex h-[60px] w-full items-center justify-end border-b border-b-brand-gray-1 sm:justify-between'>
+    <header className='fixed top-0 z-50 flex h-[60px] w-full items-center justify-end border-b border-b-brand-gray-1 bg-brand-white sm:justify-between'>
       <div
         className='absolute left-1/2 top-1/2 z-40 ml-4 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer sm:static sm:-translate-x-0 sm:-translate-y-0 sm:transform-none'
         onClick={() => handleNavMenuClick('/', navigate)}

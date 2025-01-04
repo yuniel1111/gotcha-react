@@ -2,19 +2,26 @@ import { Link } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
 import SocialLoginList from '../components/User/SocialLoginList';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+interface FormDataType {
+  email: string;
+  password: string;
+}
 
 function SignIn() {
   const [error, setError] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = (data: FormDataType) => {
     // supabase에 들러서 아이디 비밀번호가 일치하는지 확인한 뒤에 error 상태 변경
     setError(true);
   };
 
+  const { register, handleSubmit } = useForm<FormDataType>();
+
   return (
-    <main className='flex flex-col items-center'>
-      <div className='mt-[60px] hidden sm:block'>
+    <main className='flex flex-col items-center py-[60px]'>
+      <div className='hidden sm:block'>
         <img
           src={gotchaLogoImage}
           alt='GOTCHA'
@@ -23,7 +30,7 @@ function SignIn() {
       </div>
 
       <form
-        onSubmit={onSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className='w-[400px] rounded-xl p-9 sm:mt-[60px] sm:shadow-brand-main-shadow'
       >
         <div className='flex justify-center'>
@@ -39,9 +46,10 @@ function SignIn() {
 
         <div className='mt-8'>
           <input
-            type='text'
+            type='email'
             placeholder='이메일'
             className='brand-main-input w-full'
+            {...register('email')}
           />
         </div>
         <div className='mt-4'>
@@ -49,6 +57,7 @@ function SignIn() {
             type='password'
             placeholder='비밀번호'
             className='brand-main-input w-full'
+            {...register('password')}
           />
         </div>
 

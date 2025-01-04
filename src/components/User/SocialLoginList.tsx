@@ -27,9 +27,11 @@ function SocialLoginList() {
   return (
     <>
       <div className='mt-8 flex items-center justify-between'>
-        <div className='h-[1px] w-[80px] bg-brand-gray-4'></div>
-        <p className='text-sm text-brand-gray-4'>소셜 계정으로 간편 로그인</p>
-        <div className='h-[1px] w-[80px] bg-brand-gray-4'></div>
+        <div className='h-[1px] w-full bg-brand-gray-4'></div>
+        <p className='mx-2 whitespace-nowrap text-sm text-brand-gray-4'>
+          소셜 계정으로 간편 로그인
+        </p>
+        <div className='h-[1px] w-full bg-brand-gray-4'></div>
       </div>
 
       <ul className='mt-8 flex justify-center gap-3'>
