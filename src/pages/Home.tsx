@@ -2,12 +2,31 @@ import '../css/tailwind.css';
 import saraminBanner from '../assets/saramin_banner.jpeg';
 import JobPostCard from '../components/Post/JobPostCard';
 import SortDropdown from '../components/Post/SortDropdown';
-import { useJobPostStore } from '../stores/useJobPostSotre';
 import { usePost } from '../hooks/usePost';
+import { useState } from 'react';
+
+export interface SortLabelListType {
+  [key: string]: [string, boolean];
+}
 
 function Home() {
-  const jobPosts = useJobPostStore((state) => state.jobPosts);
-  const { data, isLoading, erorr } = usePost<any[]>(`posts`);
+  const [sortLabel, setSortLabel] = useState('최신순');
+  const { data, isLoading, error } = usePost<any[]>(`posts`);
+  const sortLabelList: SortLabelListType = {
+    최신순: ['posting_date', true],
+    마감순: ['expiration_date', true],
+  };
+
+  console.log('rendering');
+
+  // const { data } = usePost<any[]>(
+  //   `post-${val}`,
+  //   sortLabelList[val][0],
+  //   sortLabelList[val][1],
+  // );
+
+  if (isLoading) return <p>Loading</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div className='response-page-padding'>
@@ -22,7 +41,11 @@ function Home() {
       </section>
       <div className='flex justify-between'>
         <h1 className='page-title'>채용공고</h1>
-        <SortDropdown />
+        <SortDropdown
+          sortLabel={sortLabel}
+          setSortLabel={setSortLabel}
+          sortLabelList={sortLabelList}
+        />
       </div>
       <section className='flex flex-wrap'>
         {data &&

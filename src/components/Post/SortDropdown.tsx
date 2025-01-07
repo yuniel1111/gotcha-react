@@ -1,21 +1,20 @@
 import { useId, useState } from 'react';
 import { IoIosArrowDown } from 'react-icons/io';
-import { usePost } from '../../hooks/usePost';
-import { useJobPostStore } from '../../stores/useJobPostSotre';
+import { SortLabelListType } from '../../pages/Home';
 
-interface sortLabelListType {
-  [key: string]: [string, boolean];
+interface SortDropdownMenuProps {
+  sortLabel: string;
+  setSortLabel: React.Dispatch<React.SetStateAction<string>>;
+  sortLabelList: SortLabelListType;
 }
 
-function SortDropdownMenu() {
+function SortDropdownMenu({
+  sortLabel,
+  setSortLabel,
+  sortLabelList,
+}: SortDropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [sortLabel, setSortLabel] = useState('최신순');
-  const setJobPosts = useJobPostStore((state) => state.setJobPosts);
   const uuid = useId();
-  const sortLabelList: sortLabelListType = {
-    최신순: ['posting_date', true],
-    마감순: ['expiration_date', true],
-  };
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -24,16 +23,6 @@ function SortDropdownMenu() {
   const handleSort = (val: string) => {
     setIsOpen(false);
     setSortLabel(val);
-
-    const { data } = usePost<any[]>(
-      `post-${val}`,
-      sortLabelList[val][0],
-      sortLabelList[val][1],
-    );
-
-    if (data) {
-      setJobPosts(data);
-    }
   };
 
   return (
