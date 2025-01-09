@@ -4,10 +4,17 @@
 
 @layer base {
   @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
-      format('woff');
-    font-weight: 400;
+    font-family: 'Pretendard';
+    src:
+      url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff2')
+        format('woff2'),
+      url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff2')
+        format('woff2'),
+      url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff2')
+        format('woff2'),
+      url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraBold.woff2')
+        format('woff2');
+    font-weight: 400 800;
     font-style: normal;
   }
 
@@ -55,22 +62,18 @@
   .responsive-post-width {
     width: 25%;
 
-    /* 1600px 이상일 때 */
     @media (min-width: 1600px) {
       width: 20%;
     }
 
-    /* 768px ~ 991px 사이일 때 */
     @media (min-width: 769px) and (max-width: 991px) {
       width: 33.3%;
     }
 
-    /* 768px ~ 991px 사이일 때 */
     @media (min-width: 431px) and (max-width: 768px) {
       width: 50%;
     }
 
-    /* 767px 이하일 때 */
     @media (max-width: 430px) {
       width: 100%;
     }

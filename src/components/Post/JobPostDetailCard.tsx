@@ -18,7 +18,7 @@ export default function JobPostDetailCard({ post }: { post: GotchaPostType }) {
         'z-100 absolute left-0 top-0 flex w-full flex-col gap-8 overflow-visible rounded-md bg-black bg-opacity-85 px-5 py-10 text-brand-white',
       )}
     >
-      <div className='text-center text-lg font-extrabold'>{post.title}</div>
+      <div className='text-center text-lg font-bold'>{post.title}</div>
       <table className='w-[90%] table-auto self-center text-left text-sm'>
         <tbody>
           {detailPostData.map((rowData) => (
