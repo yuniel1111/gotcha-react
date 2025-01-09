@@ -7,17 +7,15 @@ const addFetch = async (
   profile_id: string,
   post: GotchaPostType,
 ) => {
-  const { error } = await supabase
-    .from('bookmark')
-    .insert({
-      post_id: Number(post_id),
-      profile_id: Number(profile_id),
-      detail: post,
-    });
+  const { error } = await supabase.from('bookmark').insert({
+    post_id: Number(post_id),
+    profile_id: Number(profile_id),
+    detail: post,
+  });
 
   if (error) throw new Error(error.message);
 
-  return { action: 'added', post_id };
+  return post_id;
 };
 
 const deleteFetch = async (post_id: string) => {
@@ -28,7 +26,7 @@ const deleteFetch = async (post_id: string) => {
 
   if (error) throw new Error(error.message);
 
-  return { action: 'deleted', post_id };
+  return post_id;
 };
 
 export const useToggleBookmark = (
@@ -38,15 +36,15 @@ export const useToggleBookmark = (
 ) => {
   const queryClient = useQueryClient();
 
-  const addMutation = useMutation({
-    mutationFn: (postId: string) => addFetch(post_id, profile_id, post),
+  const addMutation = useMutation<string, Error, string>({
+    mutationFn: () => addFetch(post_id, profile_id, post),
     meta: { type: 'delete-bookmark' },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
     },
   });
-  const deleteMutation = useMutation({
-    mutationFn: (post_id: string) => deleteFetch(post_id),
+  const deleteMutation = useMutation<string, Error, string>({
+    mutationFn: () => deleteFetch(post_id),
     meta: { type: 'add-bookmark' },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['bookmarks'] });

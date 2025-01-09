@@ -11,7 +11,6 @@ export interface SortLabelListType {
 }
 
 function Home() {
-  console.log('Home rerendering');
   const sortLabelList: SortLabelListType = {
     최신순: ['posting_date', true],
     마감순: ['expiration_date', true],

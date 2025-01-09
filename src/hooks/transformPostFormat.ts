@@ -1,5 +1,5 @@
 import { GotchaPostType } from '../types/gotchaPostType';
-import { PlatformPostType } from '../types/platFormPostType';
+import { PlatformPostType } from '../types/platformPostType';
 
 export const transformPostFormat = (
   platformPost: PlatformPostType,

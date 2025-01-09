@@ -1,9 +1,9 @@
 export interface PlatformPostType {
   post_id: string;
-  platform: string;
-  posting_date: Date;
-  expiration_date: Date;
-  content: GoyongType | JobkoreaType | SaraminType;
+  platform: string | null;
+  posting_date: string | null;
+  expiration_date: string;
+  content: Json | null;
 }
 
 export interface GoyongType {

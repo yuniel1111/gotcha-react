@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../api/supabase/supabaseClient';
-import { PlatformPostType } from '../types/platFormPostType';
+import { PlatformPostType } from '../types/platformPostType';
 import { transformPostFormat } from './transformPostFormat';
 import { GotchaPostType } from '../types/gotchaPostType';
 
@@ -25,13 +25,14 @@ const transformPosts = (posts: PlatformPostType[]): GotchaPostType[] => {
 
 const fetchPost = async (sortLabel: string, sortOrder: boolean) => {
   const { data, error } = await supabase
-    .from('post')
+    .from('post' as any)
     .select('*')
     .order(sortLabel, { ascending: sortOrder });
 
   if (error) {
     throw new Error(`Error fetching posts: ${error.message}`);
   }
+
   return transformPosts(data) || [];
 };
 
