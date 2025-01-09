@@ -31,7 +31,7 @@ export const transformPostFormat = (
       employment_type: content.position?.['job-type']?.name,
       salary: content.salary?.name,
       education: content.position['required-education-level'].name,
-      orgin_post_link: content.url,
+      post_url: content.url,
       isBookmarked: false,
     };
   }

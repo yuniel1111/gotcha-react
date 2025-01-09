@@ -6,12 +6,15 @@ import { FaRegBookmark } from 'react-icons/fa';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
+import JobPostDetailCard from './JobPostDetailCard';
 
 function JobPostCard({ post }: { post: GotchaPostType }) {
   // 임시
   const profile_id = '1';
   console.log('JobPostCard rerendering');
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDetailFixed, setIsDetailFixed] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [deadline, setDeadline] = useState<string>('');
   const [isExpired, setIsExpired] = useState(false);
@@ -39,6 +42,17 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
     }
   };
 
+  const handleHoverToOpenDetail = (eventType: string) => {
+    if (isDetailFixed) return;
+    if (eventType === 'mouseover') setIsHovered(true);
+    if (eventType === 'mouseout') setIsHovered(false);
+  };
+
+  const handleClickToOpenDetail = () => {
+    setIsDetailFixed((isDetailFixed) => !isDetailFixed);
+    if (!isDetailFixed) setIsHovered(true);
+  };
+
   useEffect(() => {
     if (post?.deadline) {
       const deadlineDate = new Date(post.deadline.toLocaleDateString());
@@ -56,31 +70,49 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
 
       if (diff > 0 && diff < 10) setDeadline(`D-${diff}`);
       else if (diff < 0) {
-        // setDeadline(`~ ${month}.${day}(${weekday})`);
-        setDeadline('마감');
-        setIsExpired(true);
+        setDeadline(`~ ${month}.${day}(${weekday})`);
+        // setDeadline('마감');
+        // setIsExpired(true);
       } else setDeadline(`~ ${month}.${day}(${weekday})`);
     }
   }, [post?.deadline]);
 
   return (
-    <li className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'>
-      <img
-        className='absolute -left-1.5 -top-1.5 z-20 w-20'
-        src={wantedTag}
-        alt='wanted logo'
-      />
-      {/* 공고 이미지 */}
-      <div className='overflow-hidden rounded-md'>
-        <div className='relative aspect-[7/5]'>
-          <img
-            className='h-full w-full object-cover'
-            src={companySample}
-            alt='sample 이미지'
-          />
+    <>
+      <li
+        className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'
+        onMouseOver={() => handleHoverToOpenDetail('mouseover')}
+        onMouseOut={() => handleHoverToOpenDetail('mouseout')}
+        onClick={handleClickToOpenDetail}
+      >
+        <img
+          className='absolute -left-1.5 -top-1.5 z-20 w-20'
+          src={wantedTag}
+          alt='wanted logo'
+        />
+        {/* 공고 이미지 */}
+        <div className='relative h-[100vh] overflow-hidden rounded-md'>
+          <div className='relative'>
+            <img
+              className='aspect-[7/5] w-full object-cover'
+              src={companySample}
+              alt='sample 이미지'
+            />
+            <span
+              className={twMerge(
+                'absolute rounded-md bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
+                isExpired
+                  ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
+                  : 'bottom-2 right-3',
+                isHovered ? '' : 'z-50',
+              )}
+            >
+              {isExpired ? '마감된 공고' : deadline}
+            </span>
+          </div>
           <div
             className={twMerge(
-              'absolute left-0 top-0 h-full w-full bg-black',
+              'absolute left-0 top-0 aspect-[7/5] w-full bg-black',
               isExpired ? 'opacity-65' : 'opacity-30',
             )}
           ></div>
@@ -96,43 +128,36 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
               )}
             </button>
           )}
-          <span
-            className={twMerge(
-              'absolute z-50 rounded-md bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
-              isExpired
-                ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
-                : 'bottom-2 right-3',
-            )}
-          >
-            {isExpired ? '마감된 공고' : deadline}
-          </span>
-        </div>
-        {/* 공고 정보 */}
-        <div className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
-          <p className='font-bol truncate text-nowrap pb-1 text-base'>
-            {post?.title}
-          </p>
-          <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
-            {/* <p className='py-0.5 text-brand-black'>{post?.company}</p>
+
+          {isHovered && <JobPostDetailCard post={post} />}
+
+          {/* 공고 정보 */}
+          <div className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
+            <p className='font-bol truncate text-nowrap pb-1 text-base'>
+              {post?.title}
+            </p>
+            <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
+              {/* <p className='py-0.5 text-brand-black'>{post?.company}</p>
             <p className='truncate'>{post?.location}</p> */}
-            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
-              <span className='text-brand-black'>{post?.company}</span>
-              {post?.company && post?.location && (
-                <span className='px-[6px]'>|</span>
-              )}
-              <span className='truncate'>{post?.location}</span>
-            </p>
-            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
-              <span>{post?.job}</span>
-              {post?.job && post?.experience && (
-                <span className='px-[6px]'>|</span>
-              )}
-              <span className='truncate'>{post?.experience}</span>
-            </p>
+              <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+                <span className='text-brand-black'>{post?.company}</span>
+                {post?.company && post?.location && (
+                  <span className='px-[6px]'>|</span>
+                )}
+                <span className='truncate'>{post?.location}</span>
+              </p>
+              <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+                <span>{post?.job}</span>
+                {post?.job && post?.experience && (
+                  <span className='px-[6px]'>|</span>
+                )}
+                <span className='truncate'>{post?.experience}</span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
-    </li>
+      </li>
+    </>
   );
 }
 export default JobPostCard;

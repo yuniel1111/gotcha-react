@@ -13,6 +13,6 @@ export interface GotchaPostType {
   employment_type: string;
   salary: string;
   education: string;
-  orgin_post_link: string;
+  post_url: string;
   isBookmarked: boolean;
 }
