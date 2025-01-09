@@ -1,19 +1,76 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import companySample from '../../assets/company_sample.webp';
-import wantedLogo from '../../assets/wanted_logo.png';
+import wantedTag from '../../assets/wanted_tag.png';
 import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
+import { GotchaPostType } from '../../types/gotchaPostType';
+import { twMerge } from 'tailwind-merge';
+import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 
-function JobPostCard({ isBookmarkedProps }: { isBookmarkedProps: boolean }) {
-  const [isBookmarked, setIsBookmarked] = useState(isBookmarkedProps);
+function JobPostCard({ post }: { post: GotchaPostType }) {
+  // 임시
+  const profile_id = '1';
+  console.log('JobPostCard rerendering');
 
-  const handleBookmarked = () => {
-    setIsBookmarked((isBookmarked) => !isBookmarked);
-    // supabase 처리
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [deadline, setDeadline] = useState<string>('');
+  const [isExpired, setIsExpired] = useState(false);
+  const { addMutation, deleteMutation } = useToggleBookmark(
+    post.post_id,
+    profile_id,
+    post,
+  );
+
+  const handleBookmarked = async () => {
+    if (isBookmarked) {
+      try {
+        await deleteMutation.mutateAsync(post.post_id);
+        setIsBookmarked(false);
+      } catch (error) {
+        console.error('북마크 삭제 중 에러:', error);
+      }
+    } else {
+      try {
+        await addMutation.mutateAsync(post.post_id);
+        setIsBookmarked(true);
+      } catch (error) {
+        console.error('북마크 추가 중 에러:', error);
+      }
+    }
   };
 
+  useEffect(() => {
+    if (post?.deadline) {
+      const deadlineDate = new Date(post.deadline.toLocaleDateString());
+      const todayWithoutTimeDate = new Date(new Date().toLocaleDateString());
+      const diff = Math.floor(
+        (deadlineDate.getTime() - todayWithoutTimeDate.getTime()) /
+          (1000 * 60 * 60 * 24),
+      );
+
+      const month = deadlineDate.getMonth() + 1;
+      const day = deadlineDate.getDate();
+      const weekday = deadlineDate.toLocaleDateString('ko-KR', {
+        weekday: 'short',
+      });
+
+      if (diff > 0 && diff < 10) setDeadline(`D-${diff}`);
+      else if (diff < 0) {
+        // setDeadline(`~ ${month}.${day}(${weekday})`);
+        setDeadline('마감');
+        setIsExpired(true);
+      } else setDeadline(`~ ${month}.${day}(${weekday})`);
+    }
+  }, [post?.deadline]);
+
   return (
-    <li className='responsive-post-width list-none px-2 py-5'>
+    <li className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'>
+      <img
+        className='absolute -left-1.5 -top-1.5 z-20 w-20'
+        src={wantedTag}
+        alt='wanted logo'
+      />
+      {/* 공고 이미지 */}
       <div className='overflow-hidden rounded-md'>
         <div className='relative aspect-[7/5]'>
           <img
@@ -21,35 +78,57 @@ function JobPostCard({ isBookmarkedProps }: { isBookmarkedProps: boolean }) {
             src={companySample}
             alt='sample 이미지'
           />
-          <div className='absolute left-0 top-0 h-full w-full bg-black opacity-40'></div>
-          <button
-            className='absolute right-2 top-2 cursor-pointer text-[1.5rem]'
-            onClick={handleBookmarked}
-          >
-            {isBookmarked ? (
-              <FaBookmark className='text-brand-sub' />
-            ) : (
-              <FaRegBookmark className='text-brand-white' />
+          <div
+            className={twMerge(
+              'absolute left-0 top-0 h-full w-full bg-black',
+              isExpired ? 'opacity-65' : 'opacity-30',
             )}
-          </button>
-          <span className='absolute bottom-2 right-3 rounded-md bg-black px-2 text-brand-white'>
-            D-5
+          ></div>
+          {!isExpired && (
+            <button
+              className='absolute right-2 top-2 cursor-pointer text-[1.5rem]'
+              onClick={handleBookmarked}
+            >
+              {isBookmarked ? (
+                <FaBookmark className='text-brand-sub' />
+              ) : (
+                <FaRegBookmark className='text-brand-white' />
+              )}
+            </button>
+          )}
+          <span
+            className={twMerge(
+              'absolute z-50 rounded-md bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
+              isExpired
+                ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
+                : 'bottom-2 right-3',
+            )}
+          >
+            {isExpired ? '마감된 공고' : deadline}
           </span>
         </div>
+        {/* 공고 정보 */}
         <div className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
-          <div className='flex items-center justify-between pb-1'>
-            <p className='truncate font-bold'>공고 제목</p>
-            <img
-              className='max-h-[2rem] object-cover'
-              src={wantedLogo}
-              alt='wanted logo'
-            />
-          </div>
-          <div className='flex gap-[6px] pb-1 text-brand-gray-4'>
-            <p className='truncate text-[0.875rem]'>회사명 | 서울 강남구</p>
-          </div>
-          <div className='flex gap-[6px] text-brand-gray-4'>
-            <p className='truncate text-[0.875rem]'>Software Engineer | 신입</p>
+          <p className='font-bol truncate text-nowrap pb-1 text-base'>
+            {post?.title}
+          </p>
+          <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
+            {/* <p className='py-0.5 text-brand-black'>{post?.company}</p>
+            <p className='truncate'>{post?.location}</p> */}
+            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+              <span className='text-brand-black'>{post?.company}</span>
+              {post?.company && post?.location && (
+                <span className='px-[6px]'>|</span>
+              )}
+              <span className='truncate'>{post?.location}</span>
+            </p>
+            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+              <span>{post?.job}</span>
+              {post?.job && post?.experience && (
+                <span className='px-[6px]'>|</span>
+              )}
+              <span className='truncate'>{post?.experience}</span>
+            </p>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import JobOpeningCard from '../components/Post/JobPostCard';
+// import JobPostCard from '../components/Post/JobPostCard';
 
 function Bookmark() {
   return (
@@ -16,9 +16,9 @@ function Bookmark() {
           </div>
         </div>
         <section className='flex flex-wrap'>
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <JobOpeningCard key={idx} isBookmarkedProps={true} />
-          ))}
+          {/* {Array.from({ length: 5 }).map((_, idx) => (
+            <JobPostCard key={idx} />
+          ))} */}
         </section>
       </div>
     </>
