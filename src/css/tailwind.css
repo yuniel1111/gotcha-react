@@ -18,19 +18,19 @@
 
 @layer components {
   .brand-main-button {
-    @apply bg-brand-main border border-brand-main text-brand-white rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-main bg-brand-main font-bold text-brand-white;
   }
 
   .brand-sub-button {
-    @apply bg-brand-white border border-brand-black text-brand-black rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-black bg-brand-white font-bold text-brand-black;
   }
 
   .brand-confirm-button {
-    @apply bg-brand-sub border border-brand-sub text-brand-white rounded-md cursor-pointer font-bold;
+    @apply cursor-pointer rounded-md border border-brand-sub bg-brand-sub font-bold text-brand-white;
   }
 
   .brand-main-input {
-    @apply border border-brand-gray-4 rounded-md text-[16px] px-[12px] py-[8px];
+    @apply rounded-md border border-brand-gray-4 px-[12px] py-[8px] text-[16px];
   }
 
   .brand-main-input:focus {
@@ -38,7 +38,7 @@
   }
 
   .page-title {
-    @apply text-[1.5rem] font-bold
+    @apply text-[1.5rem] font-bold;
   }
 
   .response-page-padding {
@@ -57,17 +57,22 @@
 
     /* 1600px 이상일 때 */
     @media (min-width: 1600px) {
-      width: 20%; 
+      width: 20%;
     }
 
     /* 768px ~ 991px 사이일 때 */
-    @media (min-width: 768px) and (max-width: 991px) {
-      width: 33.3%; 
+    @media (min-width: 769px) and (max-width: 991px) {
+      width: 33.3%;
+    }
+
+    /* 768px ~ 991px 사이일 때 */
+    @media (min-width: 431px) and (max-width: 768px) {
+      width: 50%;
     }
 
     /* 767px 이하일 때 */
-    @media (max-width: 767px) {
-      width: 50%;
+    @media (max-width: 430px) {
+      width: 100%;
     }
   }
 }
