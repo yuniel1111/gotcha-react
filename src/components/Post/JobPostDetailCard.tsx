@@ -32,7 +32,7 @@ export default function JobPostDetailCard({ post }: { post: GotchaPostType }) {
         </tbody>
       </table>
       <a href={post.post_url} target='_blank'>
-        <button className='w-full rounded-md border border-brand-white py-2 hover:bg-brand-sub'>
+        <button className='w-full rounded-md border border-brand-white py-2 font-bold hover:bg-brand-sub'>
           지원하러 가기
         </button>
       </a>

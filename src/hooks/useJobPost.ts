@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../api/supabase/supabaseClient';
 import { PlatformPostType } from '../types/platformPostType';
-import { transformPostFormat } from './transformPostFormat';
+import { transformPostFormat } from '../utils/transformPostFormat';
 import { GotchaPostType } from '../types/gotchaPostType';
 
 interface QueryType {
