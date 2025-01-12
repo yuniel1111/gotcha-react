@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
 import SocialLoginList from '../components/User/SocialLoginList';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { supabase } from '../api/supabase/supabaseClient';
+import CryptoJS from 'crypto-js';
+import { useUserStore } from '../stores/useUserStore';
 
 interface FormDataType {
   email: string;
@@ -10,14 +12,35 @@ interface FormDataType {
 }
 
 function SignIn() {
-  const [error, setError] = useState(false);
+  const navigate = useNavigate();
+  const { setUserLogin, setUserSession } = useUserStore(
+    (state) => state.actions,
+  );
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<FormDataType>();
 
-  const onSubmit = (data: FormDataType) => {
-    // supabase에 들러서 아이디 비밀번호가 일치하는지 확인한 뒤에 error 상태 변경
-    setError(true);
+  const onSubmit = async (data: FormDataType) => {
+    const { data: userData, error: userError } =
+      await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: CryptoJS.SHA256(data.password).toString(),
+      });
+
+    if (userError)
+      setError('password', {
+        message: '이메일 또는 비밀번호가 일치하지 않습니다.',
+      });
+
+    if (userData) {
+      setUserLogin(true);
+      setUserSession(userData.session);
+      navigate('/');
+    }
   };
-
-  const { register, handleSubmit } = useForm<FormDataType>();
 
   return (
     <main className='flex flex-col items-center pb-[60px] sm:pt-[60px]'>
@@ -30,6 +53,7 @@ function SignIn() {
       </div>
 
       <form
+        noValidate
         onSubmit={handleSubmit(onSubmit)}
         className='w-[400px] rounded-xl p-9 sm:mt-[60px] sm:shadow-brand-main-shadow'
       >
@@ -61,6 +85,10 @@ function SignIn() {
           />
         </div>
 
+        {errors.password && (
+          <p className='mt-1 text-xs text-red-500'>{errors.password.message}</p>
+        )}
+
         <div className='mt-4'>
           <div className='flex items-center gap-1'>
             <input type='checkbox' id='saveId' className='accent-brand-main' />
@@ -69,12 +97,6 @@ function SignIn() {
             </label>
           </div>
         </div>
-
-        {error && (
-          <p className='mt-4 text-sm text-red-500'>
-            이메일 또는 비밀번호를 확인해주세요.
-          </p>
-        )}
 
         <div className='mt-4'>
           <button type='submit' className='brand-main-button w-full'>
