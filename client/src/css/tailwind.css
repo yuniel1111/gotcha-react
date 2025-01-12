@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+      format('woff');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  html {
+    font-family: 'Pretendard-Regular';
+  }
+}
+
+@layer components {
+  .brand-main-button {
+    @apply cursor-pointer rounded-md border border-brand-main bg-brand-main py-[10px] font-bold text-brand-white;
+  }
+
+  .brand-sub-button {
+    @apply cursor-pointer rounded-md border border-brand-black bg-brand-white py-[10px] font-bold text-brand-black;
+  }
+
+  .brand-confirm-button {
+    @apply cursor-pointer rounded-md border border-brand-sub bg-brand-sub py-[10px] font-bold text-brand-white;
+  }
+
+  .brand-main-input {
+    @apply rounded-md border border-brand-gray-4 px-[12px] py-[10px] text-[16px] placeholder:text-sm;
+  }
+
+  .brand-main-input-error {
+    @apply border-brand-red-1 rounded-md border px-[12px] py-[10px] text-[16px] placeholder:text-sm;
+  }
+
+  .brand-main-input:focus {
+    @apply outline-2 outline-brand-sub;
+  }
+}
