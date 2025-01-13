@@ -43,10 +43,9 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
     }
   };
 
-  const handleHoverToOpenDetail = (eventType: string) => {
+  const handleHoverToOpenDetail = () => {
     if (isDetailFixed) return;
-    if (eventType === 'mouseover') setIsHovered(true);
-    if (eventType === 'mouseout') setIsHovered(false);
+    setIsHovered((isHovered) => !isHovered);
   };
 
   const handleClickToOpenDetail = () => {
@@ -86,13 +85,13 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
 
   return (
     <>
-      <li
-        className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'
-        onMouseOver={() => handleHoverToOpenDetail('mouseover')}
-        onMouseOut={() => handleHoverToOpenDetail('mouseout')}
-        onClick={handleClickToOpenDetail}
-      >
-        <div className='relative'>
+      <li className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'>
+        <div
+          className='relative'
+          onClick={handleClickToOpenDetail}
+          onMouseOver={handleHoverToOpenDetail}
+          onMouseOut={handleHoverToOpenDetail}
+        >
           {/* 공고 이미지 */}
           <div className='relative'>
             <img
@@ -112,7 +111,6 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
                 isExpired
                   ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
                   : 'bottom-2 right-3',
-                // isHovered ? '' : 'z-50',
               )}
             >
               {isExpired ? '마감된 공고' : deadline}
@@ -127,8 +125,13 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
           {/* 북마크 버튼 */}
           {!isExpired && (
             <button
-              className='absolute right-2 top-2 cursor-pointer text-[1.5rem]'
+              className={twMerge(
+                'absolute right-0 top-0 z-50 cursor-pointer p-2.5 text-[1.5rem]',
+                isHovered && 'opacity-25',
+              )}
               onClick={handleBookmarked}
+              onMouseOver={(e) => e.stopPropagation()} // 호버 이벤트 전파 방지
+              onMouseOut={(e) => e.stopPropagation()} // 마우스 아웃 이벤트 전파 방지
             >
               {isBookmarked ? (
                 <FaBookmark className='text-brand-sub' />
