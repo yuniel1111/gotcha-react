@@ -2,6 +2,10 @@ import { supabase } from '../api/supabase/supabaseClient';
 import '../css/tailwind.css';
 import { useUserStore } from '../stores/useUserStore';
 
+export interface SortLabelListType {
+  [key: string]: [string, boolean];
+}
+
 function Home() {
   const { setUserSession, setUserLogin } = useUserStore(
     (state) => state.actions,
