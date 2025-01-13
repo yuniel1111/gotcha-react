@@ -5,10 +5,12 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '../api/supabase/supabaseClient';
 import CryptoJS from 'crypto-js';
 import { useUserStore } from '../stores/useUserStore';
+import { useEffect } from 'react';
 
 interface FormDataType {
   email: string;
   password: string;
+  isIdSaved: boolean;
 }
 
 function SignIn() {
@@ -20,8 +22,16 @@ function SignIn() {
     register,
     handleSubmit,
     setError,
+    getValues,
+    setValue,
     formState: { errors },
   } = useForm<FormDataType>();
+
+  const handleSaveId = () => {
+    if (getValues('isIdSaved') === false) {
+      localStorage.removeItem('userId');
+    }
+  };
 
   const onSubmit = async (data: FormDataType) => {
     const { data: userData, error: userError } =
@@ -30,17 +40,31 @@ function SignIn() {
         password: CryptoJS.SHA256(data.password).toString(),
       });
 
-    if (userError)
+    if (userError) {
       setError('password', {
         message: '이메일 또는 비밀번호가 일치하지 않습니다.',
       });
 
+      return;
+    }
+
     if (userData) {
+      if (data.isIdSaved) localStorage.setItem('userId', data.email);
+
       setUserLogin(true);
       setUserSession(userData.session);
       navigate('/');
     }
   };
+
+  useEffect(() => {
+    const savedId = localStorage.getItem('userId');
+
+    if (savedId) {
+      setValue('email', savedId);
+      setValue('isIdSaved', true);
+    }
+  }, [setValue]);
 
   return (
     <main className='flex flex-col items-center pb-[60px] sm:pt-[60px]'>
@@ -91,7 +115,14 @@ function SignIn() {
 
         <div className='mt-4'>
           <div className='flex items-center gap-1'>
-            <input type='checkbox' id='saveId' className='accent-brand-main' />
+            <input
+              type='checkbox'
+              id='saveId'
+              className='accent-brand-main'
+              {...register('isIdSaved', {
+                onChange: () => handleSaveId(),
+              })}
+            />
             <label htmlFor='saveId' className='text-sm text-brand-gray-4'>
               아이디 저장
             </label>

@@ -28,6 +28,11 @@ function Layout() {
     };
 
     saveSession();
+
+    return () => {
+      setUserLogin(false);
+      setUserSession(null);
+    };
   }, [setUserLogin, setUserSession]);
 
   return (
