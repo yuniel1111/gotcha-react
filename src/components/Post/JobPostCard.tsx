@@ -70,9 +70,9 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
 
       if (diff > 0 && diff < 10) setDeadline(`D-${diff}`);
       else if (diff < 0) {
-        setDeadline(`~ ${month}.${day}(${weekday})`);
-        // setDeadline('마감');
-        // setIsExpired(true);
+        // setDeadline(`~ ${month}.${day}(${weekday})`);
+        setDeadline('마감');
+        setIsExpired(true);
       } else setDeadline(`~ ${month}.${day}(${weekday})`);
     }
   }, [post?.deadline]);
