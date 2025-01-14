@@ -1,6 +1,6 @@
 import { GotchaPostType } from '../../types/gotchaPostType';
 
-export default function JobPostDetailCard({
+function JobPostDetailCard({
   post,
   handlePostLink,
 }: {
@@ -52,3 +52,4 @@ export default function JobPostDetailCard({
     </section>
   );
 }
+export default JobPostDetailCard;
