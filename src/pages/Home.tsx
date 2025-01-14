@@ -64,14 +64,6 @@ function Home() {
           posts.map((post: GotchaPostType, idx: number) => (
             <JobPostCard key={idx} post={post} />
           ))}
-        {posts &&
-          posts.map((post: GotchaPostType, idx: number) => (
-            <JobPostCard key={idx} post={post} />
-          ))}
-        {posts &&
-          posts.map((post: GotchaPostType, idx: number) => (
-            <JobPostCard key={idx} post={post} />
-          ))}
       </ul>
     </div>
   );
