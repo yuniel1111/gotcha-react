@@ -2,29 +2,29 @@ import { useState } from 'react';
 import saraminBanner from '../assets/saramin_banner.jpeg';
 import jobplanetBanner from '../assets/jobplanet_banner.png';
 import jobkoreaBanner from '../assets/jobkorea_banner.png';
-import { supabase } from '../api/supabase/supabaseClient';
 import JobPostCard from '../components/Post/JobPostCard';
 import SortDropdown from '../components/Post/SortDropdown';
 import '../css/tailwind.css';
-import { useUserStore } from '../stores/useUserStore';
 import { GotchaPostType } from '../types/gotchaPostType';
 import { useJobPost } from '../hooks/useJobPost';
 import BannerSlider from '../components/Post/BannerSlider';
+// import { supabase } from '../api/supabase/supabaseClient';
+// import { useUserStore } from '../stores/useUserStore';
 
 export interface SortLabelListType {
   [key: string]: [string, boolean];
 }
 
 function Home() {
-  const { setUserSession, setUserLogin } = useUserStore(
-    (state) => state.actions,
-  );
+  // const { setUserSession, setUserLogin } = useUserStore(
+  //   (state) => state.actions,
+  // );
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUserSession(null);
-    setUserLogin(false);
-  };
+  // const handleLogout = async () => {
+  //   await supabase.auth.signOut();
+  //   setUserSession(null);
+  //   setUserLogin(false);
+  // };
 
   const sortLabelList: SortLabelListType = {
     최신순: ['posting_date', true],
