@@ -1,5 +1,5 @@
-import { twMerge } from 'tailwind-merge';
 import { GotchaPostType } from '../../types/gotchaPostType';
+import wantedTag from '../../assets/wanted_tag.png';
 
 export default function JobPostDetailCard({
   post,
@@ -21,27 +21,32 @@ export default function JobPostDetailCard({
 
   return (
     <section
-      className={twMerge(
-        'z-100 absolute left-0 top-0 flex w-full flex-col gap-8 overflow-visible rounded-md bg-black bg-opacity-85 px-5 py-10 text-brand-white',
-      )}
+      className={
+        'absolute left-0 top-0 z-10 flex max-h-[170%] w-full flex-col rounded-md bg-black bg-opacity-85 px-4 pb-5 pt-10 text-brand-white'
+      }
     >
-      <div className='text-center text-lg font-bold'>{post.title}</div>
-      <table className='w-[90%] table-auto self-center text-left text-sm'>
-        <tbody>
-          {detailPostData.map((rowData) => (
-            <tr>
-              <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-4 align-top'>
-                {rowData[0]}
-              </th>
-              <td className='pl-4'>{rowData[1]}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <a href={post.post_url} target='_blank' onClick={handlePostLink}>
-        <button className='w-full rounded-md border border-brand-white py-2 font-bold hover:bg-brand-sub'>
-          지원하러 가기
-        </button>
+      <div className='flex flex-col items-center gap-5 overflow-y-scroll'>
+        <div className='text-center text-lg font-bold'>{post.title}</div>
+        <table className='w-[90%] table-auto self-center text-left text-sm'>
+          <tbody>
+            {detailPostData.map((rowData) => (
+              <tr>
+                <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-4 align-top'>
+                  {rowData[0]}
+                </th>
+                <td className='pl-4'>{rowData[1]}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <a
+        href={post.post_url}
+        target='_blank'
+        onClick={handlePostLink}
+        className='sticky bottom-0 mt-4 w-full rounded-md border border-brand-white bg-black py-2 text-center font-bold hover:bg-brand-sub'
+      >
+        지원하러 가기
       </a>
     </section>
   );

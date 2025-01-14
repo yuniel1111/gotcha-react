@@ -92,37 +92,38 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
         onMouseOut={() => handleHoverToOpenDetail('mouseout')}
         onClick={handleClickToOpenDetail}
       >
-        <img
-          className='absolute -left-1.5 -top-1.5 z-20 w-20'
-          src={wantedTag}
-          alt='wanted logo'
-        />
-        {/* 공고 이미지 */}
-        <div className='relative h-[100vh] overflow-hidden rounded-md'>
+        <div className='relative'>
+          {/* 공고 이미지 */}
           <div className='relative'>
             <img
-              className='aspect-[7/5] w-full object-cover'
+              className='aspect-[7/5] w-full rounded-t-md object-cover'
               src={companySample}
               alt='sample 이미지'
             />
+            <div
+              className={twMerge(
+                'absolute left-0 top-0 aspect-[7/5] w-full rounded-t-md bg-black',
+                isExpired ? 'opacity-65' : 'opacity-30',
+              )}
+            ></div>
             <span
               className={twMerge(
-                'absolute rounded-md bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
+                'absolute bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
                 isExpired
                   ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
                   : 'bottom-2 right-3',
-                isHovered ? '' : 'z-50',
+                // isHovered ? '' : 'z-50',
               )}
             >
               {isExpired ? '마감된 공고' : deadline}
             </span>
           </div>
-          <div
-            className={twMerge(
-              'absolute left-0 top-0 aspect-[7/5] w-full bg-black',
-              isExpired ? 'opacity-65' : 'opacity-30',
-            )}
-          ></div>
+
+          {/* 상세 정보 팝업 */}
+          {isHovered && (
+            <JobPostDetailCard post={post} handlePostLink={handlePostLink} />
+          )}
+
           {/* 북마크 버튼 */}
           {!isExpired && (
             <button
@@ -137,18 +138,12 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
             </button>
           )}
 
-          {isHovered && (
-            <JobPostDetailCard post={post} handlePostLink={handlePostLink} />
-          )}
-
           {/* 공고 정보 */}
           <div className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
             <p className='font-bol truncate text-nowrap pb-1 text-base'>
               {post?.title}
             </p>
             <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
-              {/* <p className='py-0.5 text-brand-black'>{post?.company}</p>
-            <p className='truncate'>{post?.location}</p> */}
               <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
                 <span className='text-brand-black'>{post?.company}</span>
                 {post?.company && post?.location && (
@@ -166,6 +161,14 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
             </div>
           </div>
         </div>
+        <img
+          className={twMerge(
+            'absolute -left-1.5 -top-1.5 w-20',
+            isHovered && 'z-20',
+          )}
+          src={wantedTag}
+          alt='wanted logo'
+        />
       </li>
     </>
   );
