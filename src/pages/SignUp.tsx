@@ -168,13 +168,18 @@ function SignUp() {
    * Form 제출
    */
   const onSubmit = async (data: FormDataType) => {
-    // 폴더 구조 변경 (server 제거)
-    // 최종적으로 회원가입이 완료되면 public user 테이블에도 정보 저장 (trigger 사용)
-    // 전화번호 인증 시간관련 설정 찾아보기 (twilio or supabase)
-    // 세션 할당 관련해서 알아보기
+    const password = CryptoJS.SHA256(data.password).toString();
+
     const { data: userData, error: userError } = await supabase.auth.signUp({
       email: data.email,
-      password: CryptoJS.SHA256(data.password).toString(),
+      password,
+      options: {
+        data: {
+          password,
+          name: data.name,
+          phone: data.phoneNumber,
+        },
+      },
     });
 
     if (userError) {

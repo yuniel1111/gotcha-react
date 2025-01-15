@@ -8,24 +8,12 @@ import '../css/tailwind.css';
 import { GotchaPostType } from '../types/gotchaPostType';
 import { useJobPost } from '../hooks/useJobPost';
 import BannerSlider from '../components/Post/BannerSlider';
-// import { supabase } from '../api/supabase/supabaseClient';
-// import { useUserStore } from '../stores/useUserStore';
 
 export interface SortLabelListType {
   [key: string]: [string, boolean];
 }
 
 function Home() {
-  // const { setUserSession, setUserLogin } = useUserStore(
-  //   (state) => state.actions,
-  // );
-
-  // const handleLogout = async () => {
-  //   await supabase.auth.signOut();
-  //   setUserSession(null);
-  //   setUserLogin(false);
-  // };
-
   const sortLabelList: SortLabelListType = {
     최신순: ['posting_date', true],
     마감순: ['expiration_date', true],
