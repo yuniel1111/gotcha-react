@@ -6,6 +6,7 @@ import { supabase } from '../api/supabase/supabaseClient';
 import CryptoJS from 'crypto-js';
 import { useUserStore } from '../stores/useUserStore';
 import { useEffect } from 'react';
+import { getUserProfile } from '../api/supabase/userService';
 
 interface FormDataType {
   email: string;
@@ -15,7 +16,7 @@ interface FormDataType {
 
 function SignIn() {
   const navigate = useNavigate();
-  const { setUserLogin, setUserSession } = useUserStore(
+  const { setUserLogin, setUserProfile } = useUserStore(
     (state) => state.actions,
   );
   const {
@@ -34,13 +35,13 @@ function SignIn() {
   };
 
   const onSubmit = async (data: FormDataType) => {
-    const { data: userData, error: userError } =
+    const { data: userSignInData, error: userSignInError } =
       await supabase.auth.signInWithPassword({
         email: data.email,
         password: CryptoJS.SHA256(data.password).toString(),
       });
 
-    if (userError) {
+    if (userSignInError) {
       setError('password', {
         message: '이메일 또는 비밀번호가 일치하지 않습니다.',
       });
@@ -48,12 +49,16 @@ function SignIn() {
       return;
     }
 
-    if (userData) {
+    if (userSignInData) {
       if (data.isIdSaved) localStorage.setItem('userId', data.email);
 
-      setUserLogin(true);
-      setUserSession(userData.session);
-      navigate('/');
+      const userProfile = getUserProfile(userSignInData.session.user.id);
+
+      if (userProfile) {
+        setUserProfile(userProfile);
+        setUserLogin(true);
+        navigate('/');
+      }
     }
   };
 

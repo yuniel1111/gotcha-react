@@ -2,13 +2,13 @@ import { supabase } from '../api/supabase/supabaseClient';
 import { useUserStore } from '../stores/useUserStore';
 
 function Note() {
-  const { setUserSession, setUserLogin } = useUserStore(
+  const { setUserProfile, setUserLogin } = useUserStore(
     (state) => state.actions,
   );
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    setUserSession(null);
+    setUserProfile(null);
     setUserLogin(false);
   };
   return (

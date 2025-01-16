@@ -2,19 +2,19 @@ import { create } from 'zustand';
 
 interface UserType {
   isLoggedIn: boolean;
-  userSession: any;
+  userProfile: any;
   actions: {
     setUserLogin: (isLoggedIn: boolean) => void;
-    setUserSession: (userSession: any) => void;
+    setUserProfile: (userSession: any) => void;
   };
 }
 
 export const useUserStore = create<UserType>((set) => ({
   isLoggedIn: false,
-  userSession: null,
+  userProfile: null,
 
   actions: {
     setUserLogin: (isLoggedIn: boolean) => set({ isLoggedIn }),
-    setUserSession: (userSession: any) => set({ userSession }),
+    setUserProfile: (userProfile: any) => set({ userProfile }),
   },
 }));
