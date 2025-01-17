@@ -3,9 +3,8 @@ import Header from '../components/Layout/Header';
 import BottomNav from '../components/Layout/BottomNav';
 import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
-import { supabase } from '../api/supabase/supabaseClient';
 import { useUserStore } from '../stores/useUserStore';
-import { getUserProfile } from '../api/supabase/userService';
+import { getUserProfile, getUserId } from '../api/supabase/userService';
 
 function Layout() {
   const location = useLocation();
@@ -18,11 +17,11 @@ function Layout() {
   );
 
   useEffect(() => {
-    const saveSession = async () => {
-      const { data } = await supabase.auth.getSession();
+    const saveUserProfile = async () => {
+      const userId = await getUserId();
 
-      if (data?.session) {
-        const userProfile = getUserProfile(data.session.user.id);
+      if (userId) {
+        const userProfile = getUserProfile(userId);
 
         if (userProfile) {
           setUserLogin(true);
@@ -31,7 +30,7 @@ function Layout() {
       }
     };
 
-    saveSession();
+    saveUserProfile();
 
     return () => {
       setUserLogin(false);
