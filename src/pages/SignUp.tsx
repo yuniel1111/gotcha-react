@@ -3,9 +3,14 @@ import gotchaLogoImage from '../assets/gotcha_logo.png';
 import SocialLoginList from '../components/User/SocialLoginList';
 import { useForm } from 'react-hook-form';
 import { v4 as uuid } from 'uuid';
-import { supabase } from '../api/supabase/supabaseClient';
 import { useEffect, useRef, useState } from 'react';
 import CryptoJS from 'crypto-js';
+import {
+  sendVerificationCode,
+  signOut,
+  signUp,
+  verifyCode,
+} from '../api/supabase/userService';
 
 interface FormDataType {
   email: string;
@@ -116,9 +121,7 @@ function SignUp() {
       return;
     }
 
-    const { error } = await supabase.auth.signInWithOtp({
-      phone: formatPhoneNumber(phoneNumber),
-    });
+    const error = await sendVerificationCode(formatPhoneNumber(phoneNumber));
 
     if (error) {
       throw new Error(`Sign In With Otp Error : ${error}`);
@@ -134,6 +137,7 @@ function SignUp() {
 
   const handleVerificationValidate = async () => {
     const token = getValues('verificationCode');
+    const phoneNumber = getValues('phoneNumber');
 
     if (token.length !== 6) {
       setError('verificationCode', {
@@ -143,11 +147,10 @@ function SignUp() {
       return;
     }
 
-    const { data, error } = await supabase.auth.verifyOtp({
-      phone: formatPhoneNumber(getValues('phoneNumber')),
+    const { data, error } = await verifyCode(
+      formatPhoneNumber(phoneNumber),
       token,
-      type: 'sms',
-    });
+    );
 
     if (error) {
       setError('verificationCode', {
@@ -160,7 +163,7 @@ function SignUp() {
         timerId.current = null;
       }
 
-      if (data) supabase.auth.signOut();
+      if (data) signOut();
     }
   };
 
@@ -170,17 +173,12 @@ function SignUp() {
   const onSubmit = async (data: FormDataType) => {
     const password = CryptoJS.SHA256(data.password).toString();
 
-    const { data: userData, error: userError } = await supabase.auth.signUp({
-      email: data.email,
+    const { data: userData, error: userError } = await signUp(
+      data.email,
       password,
-      options: {
-        data: {
-          password,
-          name: data.name,
-          phone: data.phoneNumber,
-        },
-      },
-    });
+      data.name,
+      data.phoneNumber,
+    );
 
     if (userError) {
       setError('email', {
@@ -191,7 +189,7 @@ function SignUp() {
     }
 
     if (userData) {
-      supabase.auth.signOut();
+      signOut();
       navigate('/sign-in');
     }
   };

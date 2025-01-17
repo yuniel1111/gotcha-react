@@ -2,11 +2,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
 import SocialLoginList from '../components/User/SocialLoginList';
 import { useForm } from 'react-hook-form';
-import { supabase } from '../api/supabase/supabaseClient';
 import CryptoJS from 'crypto-js';
 import { useUserStore } from '../stores/useUserStore';
 import { useEffect } from 'react';
-import { getUserProfile } from '../api/supabase/userService';
+import { getUserProfile, signInWithEmail } from '../api/supabase/userService';
 
 interface FormDataType {
   email: string;
@@ -36,29 +35,25 @@ function SignIn() {
 
   const onSubmit = async (data: FormDataType) => {
     const { data: userSignInData, error: userSignInError } =
-      await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: CryptoJS.SHA256(data.password).toString(),
-      });
+      await signInWithEmail(
+        data.email,
+        CryptoJS.SHA256(data.password).toString(),
+      );
 
-    if (userSignInError) {
+    if (userSignInError || !userSignInData?.session) {
       setError('password', {
         message: '이메일 또는 비밀번호가 일치하지 않습니다.',
       });
-
       return;
     }
 
-    if (userSignInData) {
-      if (data.isIdSaved) localStorage.setItem('userId', data.email);
+    if (data.isIdSaved) localStorage.setItem('userId', data.email);
+    const userProfile = getUserProfile(userSignInData.session.user.id);
 
-      const userProfile = getUserProfile(userSignInData.session.user.id);
-
-      if (userProfile) {
-        setUserProfile(userProfile);
-        setUserLogin(true);
-        navigate('/');
-      }
+    if (userProfile) {
+      setUserProfile(userProfile);
+      setUserLogin(true);
+      navigate('/');
     }
   };
 
