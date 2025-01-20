@@ -2,7 +2,7 @@ import { supabase } from '../api/supabase/supabaseClient';
 import { PlatformPostType } from '../types/platformPostType';
 import { transformPostFormat } from '../utils/transformPostFormat';
 import { GotchaPostType } from '../types/gotchaPostType';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 
 interface QueryType {
   staleTime?: number;
@@ -63,7 +63,7 @@ export const useJobPost = (
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery<GotchaPostType[]>({
+  } = useSuspenseInfiniteQuery<GotchaPostType[]>({
     queryKey: [queryKey],
     queryFn: ({ pageParam = 1 }) =>
       fetchPost(sortLabel, sortOrder, pageParam as number, pageSize),

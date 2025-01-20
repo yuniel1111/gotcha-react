@@ -64,14 +64,9 @@ function Home() {
     return () => observer.disconnect();
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (status === 'pending') return <p>Loading</p>;
-  // if (status === 'error') return <p>Error: {error.message}</p>;
-
   return (
     <div className='response-page-padding'>
-      <section className='py-6'>
-        <BannerSlider />
-      </section>
+      <BannerSlider />
       <div className='flex justify-between'>
         <h1 className='page-title'>채용공고</h1>
         <SortDropdown
@@ -95,8 +90,9 @@ function Home() {
           Array.from({ length: 5 }).map((_, index) => (
             <SkeletonJobPostCard key={`skeleton-${index}`} />
           ))}
+
+        <div ref={observerRef} className='h-10'></div>
       </ul>
-      <div ref={observerRef} className='h-10'></div>
     </div>
   );
 }

@@ -50,7 +50,7 @@ function BannerSlider() {
   }, [currentIndex]);
 
   return (
-    <div className='relative w-full overflow-hidden'>
+    <section className='relative w-full overflow-hidden py-6'>
       <div
         ref={sliderRef}
         className='flex transition-transform duration-500 ease-in-out'
@@ -90,10 +90,10 @@ function BannerSlider() {
         <SlArrowRight />
       </button>
 
-      <div className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-lg bg-[rgb(0,0,0,0.4)] px-4 text-sm text-brand-white'>
+      <div className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded-lg bg-[rgb(0,0,0,0.4)] px-4 text-sm text-brand-white'>
         {currentIndex + 1} / {totalSlides}
       </div>
-    </div>
+    </section>
   );
 }
 

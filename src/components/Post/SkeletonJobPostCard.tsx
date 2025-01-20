@@ -1,6 +1,6 @@
 function SkeletonJobPostCard() {
   return (
-    <li className='responsive-post-width relative my-3 animate-pulse list-none px-2 py-2'>
+    <li className='responsive-post-width relative my-3 animate-pulse list-none px-2 py-2 opacity-100 transition-opacity duration-500'>
       <div className='relative h-40 w-full rounded-t-md bg-brand-gray-1'></div>
 
       {/* 공고 정보 (스켈레톤) */}
