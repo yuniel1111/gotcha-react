@@ -1,5 +1,5 @@
 import { useEffect, useId, useState } from 'react';
-import wantedTag from '../../assets/wanted_tag.png';
+import wantedTag from '../../assets/wanted_tag.svg';
 import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
 import { GotchaPostType } from '../../types/gotchaPostType';

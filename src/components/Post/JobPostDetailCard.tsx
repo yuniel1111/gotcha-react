@@ -8,7 +8,6 @@ function JobPostDetailCard({
   handlePostLink: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   const detailPostData = [
-    ['회사명', post.company],
     ['근무지', post.location],
     ['직무', post.job],
     ['경력', post.experience],
@@ -30,6 +29,24 @@ function JobPostDetailCard({
         </div>
         <table className='w-[90%] table-auto self-center text-left text-sm'>
           <tbody>
+            <tr>
+              <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-3 align-top'>
+                회사명
+              </th>
+              <td className='pl-4'>
+                {post.company_url ? (
+                  <a
+                    href={post.company_url}
+                    target='_blank'
+                    className='text-brand-sub underline'
+                  >
+                    {post.company}
+                  </a>
+                ) : (
+                  `${post.company}`
+                )}
+              </td>
+            </tr>
             {detailPostData.map((rowData) => (
               <tr>
                 <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-3 align-top'>
