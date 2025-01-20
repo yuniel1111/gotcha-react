@@ -1,21 +1,35 @@
 import { useEffect, useState, useRef } from 'react';
 import { SlArrowLeft } from 'react-icons/sl';
 import { SlArrowRight } from 'react-icons/sl';
+import jobkoreaBanner from '../../assets/banner/jobkorea_banner.png';
+import jobplanetBanner from '../../assets/banner/jobplanet_banner.png';
+import saraminBanner from '../../assets/banner/saramin_banner.png';
 
 function BannerSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const files = import.meta.glob('/src/assets/banner/*');
-  const bannerImages = Object.keys(files);
-  const totalSlides = bannerImages.length;
+  const bannerInfo = [
+    [saraminBanner, 'https://www.saramin.co.kr/'],
+    [jobkoreaBanner, 'https://www.jobkorea.co.kr/'],
+    [jobplanetBanner, 'https://www.jobplanet.co.kr'],
+  ];
+  const totalSlides = bannerInfo.length;
 
-  // 자동 슬라이더 설정
-  useEffect(() => {
-    startAutoSlide();
-    return stopAutoSlide;
-  }, [currentIndex]);
+  const slideStyle = {
+    transform: `translateX(-${currentIndex * 100}%)`,
+  };
+
+  const goToNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? totalSlides - 1 : prevIndex - 1,
+    );
+  };
 
   const startAutoSlide = () => {
     stopAutoSlide();
@@ -30,19 +44,10 @@ function BannerSlider() {
     }
   };
 
-  const goToNextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-  };
-
-  const goToPrevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? totalSlides - 1 : prevIndex - 1,
-    );
-  };
-
-  const slideStyle = {
-    transform: `translateX(-${currentIndex * 100}%)`,
-  };
+  useEffect(() => {
+    startAutoSlide();
+    return stopAutoSlide;
+  }, [currentIndex]);
 
   return (
     <div className='relative w-full overflow-hidden'>
@@ -51,14 +56,19 @@ function BannerSlider() {
         className='flex transition-transform duration-500 ease-in-out'
         style={slideStyle}
       >
-        {bannerImages.map((image, index) => (
-          <div key={index} className='min-w-full'>
+        {bannerInfo.map(([bannerImage, bannerUrl], index) => (
+          <a
+            href={bannerUrl}
+            target='_blank'
+            key={index}
+            className='min-w-full'
+          >
             <img
-              src={image}
+              src={bannerImage}
               alt={`Slide ${index + 1}`}
               className='h-auto w-full object-cover'
             />
-          </div>
+          </a>
         ))}
       </div>
 
