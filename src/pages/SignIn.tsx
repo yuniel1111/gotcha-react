@@ -11,6 +11,7 @@ interface FormDataType {
   email: string;
   password: string;
   isIdSaved: boolean;
+  emailPasswordError: string;
 }
 
 function SignIn() {
@@ -41,7 +42,7 @@ function SignIn() {
       );
 
     if (userSignInError || !userSignInData?.session) {
-      setError('password', {
+      setError('emailPasswordError', {
         message: '이메일 또는 비밀번호가 일치하지 않습니다.',
       });
       return;
@@ -109,8 +110,10 @@ function SignIn() {
           />
         </div>
 
-        {errors.password && (
-          <p className='mt-1 text-xs text-red-500'>{errors.password.message}</p>
+        {errors.emailPasswordError && (
+          <p className='mt-1 text-xs text-red-500'>
+            {errors.emailPasswordError.message}
+          </p>
         )}
 
         <div className='mt-4'>

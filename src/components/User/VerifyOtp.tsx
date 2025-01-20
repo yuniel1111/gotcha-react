@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   isPhoneNumberExists,
-  sendVerificationCode,
+  sendOtp,
+  verifyOtp,
   signOut,
-  verifyCode,
 } from '../../api/supabase/userService';
 import { useFormContext } from 'react-hook-form';
 
-function VerifyOtp() {
+function VerifyOtp({ isSignUp }: { isSignUp?: boolean }) {
   const [isDisabled, setIsDisabled] = useState(true);
   const [verificationCodeTimer, setVerificationCodeTimer] = useState('');
   const timerId = useRef<NodeJS.Timeout | null>(null);
@@ -56,13 +56,13 @@ function VerifyOtp() {
       });
 
       return;
-    } else if (isPhoneExists) {
+    } else if (isPhoneExists && isSignUp) {
       setError('phoneNumber', {
         message: '이미 가입된 번호입니다.',
       });
     }
 
-    sendVerificationCode(formatPhoneNumber(phoneNumber));
+    await sendOtp(formatPhoneNumber(phoneNumber));
     setIsDisabled(false);
   };
 
@@ -83,7 +83,7 @@ function VerifyOtp() {
       return;
     }
 
-    const { data, error } = await verifyCode(
+    const { data, error } = await verifyOtp(
       formatPhoneNumber(phoneNumber),
       token,
     );

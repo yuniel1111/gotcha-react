@@ -33,7 +33,7 @@ export const signInWithOAuth = async (provider: Provider) => {
     },
   });
 
-  if (error) throw new Error('[signInWithOAuth] Error');
+  if (error) throw new Error(`[signInWithOAuth] : ${error}`);
 };
 
 // 로그아웃
@@ -67,22 +67,22 @@ export const signUp = async (
 export const getUserId = async () => {
   const { data, error } = await supabase.auth.getSession();
 
-  if (error) throw new Error('[getUserId] Error');
+  if (error) throw new Error(`[getUserId] : ${error}`);
 
   return data.session?.user.id;
 };
 
 // 휴대폰 OTP 전송
-export const sendVerificationCode = async (phone: string) => {
+export const sendOtp = async (phone: string) => {
   const { error } = await supabase.auth.signInWithOtp({
     phone,
   });
 
-  if (error) throw new Error('[sendVerificationCode] Error');
+  if (error) throw new Error(`[sendOtp] : ${error}`);
 };
 
 // 휴대폰 OTP 인증
-export const verifyCode = async (phone: string, token: string) => {
+export const verifyOtp = async (phone: string, token: string) => {
   const { data, error } = await supabase.auth.verifyOtp({
     phone,
     token,
@@ -94,13 +94,23 @@ export const verifyCode = async (phone: string, token: string) => {
 
 // 휴대폰 번호 중복검사
 export const isPhoneNumberExists = async (phoneNumber: string) => {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('profile')
     .select('profile_id')
     .eq('phone', phoneNumber)
     .limit(1);
 
-  if (error) throw new Error('[isPhoneNumberExists] Error');
+  return data && data.length !== 0;
+};
 
-  return data && data.length > 0;
+// 이름과 번호로 일치하는 유저의 이메일 반환
+export const getUserEmail = async (name: string, phoneNumber: string) => {
+  const { data, error } = await supabase
+    .from('profile')
+    .select('email')
+    .eq('name', name)
+    .eq('phone', phoneNumber)
+    .single();
+
+  return { data, error };
 };

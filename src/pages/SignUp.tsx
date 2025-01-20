@@ -188,7 +188,7 @@ function SignUp() {
             )}
           </div>
 
-          <VerifyOtp />
+          <VerifyOtp isSignUp={true} />
 
           <div className='mt-4'>
             <input
