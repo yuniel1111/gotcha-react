@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  isPhoneNumberExists,
   sendVerificationCode,
   signOut,
   verifyCode,
@@ -47,6 +48,7 @@ function VerifyOtp() {
    */
   const handleVerificationSend = async () => {
     const phoneNumber = getValues('phoneNumber');
+    const isPhoneExists = await isPhoneNumberExists(phoneNumber);
 
     if (!phoneNumber || phoneNumber.length < 11) {
       setError('phoneNumber', {
@@ -54,15 +56,14 @@ function VerifyOtp() {
       });
 
       return;
+    } else if (isPhoneExists) {
+      setError('phoneNumber', {
+        message: '이미 가입된 번호입니다.',
+      });
     }
 
-    const error = await sendVerificationCode(formatPhoneNumber(phoneNumber));
-
-    if (error) {
-      throw new Error(`Sign In With Otp Error : ${error}`);
-    } else {
-      setIsDisabled(false);
-    }
+    sendVerificationCode(formatPhoneNumber(phoneNumber));
+    setIsDisabled(false);
   };
 
   const clearVerificationTimer = () => {

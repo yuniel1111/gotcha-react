@@ -4,8 +4,7 @@ import { signInWithOAuth } from '../../api/supabase/userService';
 
 function SocialLoginItem({ provider }: { provider: ProviderType }) {
   const handleSocialLogin = async (providerName: Provider) => {
-    const error = await signInWithOAuth(providerName);
-    if (error) throw new Error(`${providerName} OAuth Login Error : ${error}`);
+    signInWithOAuth(providerName);
   };
 
   return (

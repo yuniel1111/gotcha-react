@@ -33,7 +33,7 @@ export const signInWithOAuth = async (provider: Provider) => {
     },
   });
 
-  return error;
+  if (error) throw new Error('[signInWithOAuth] Error');
 };
 
 // 로그아웃
@@ -63,9 +63,11 @@ export const signUp = async (
   return { data, error };
 };
 
-// auth.users 테이블의 유저 세션 정보 가져오기
+// auth.users 테이블의 유저 아이디 가져오기
 export const getUserId = async () => {
-  const { data } = await supabase.auth.getSession();
+  const { data, error } = await supabase.auth.getSession();
+
+  if (error) throw new Error('[getUserId] Error');
 
   return data.session?.user.id;
 };
@@ -76,7 +78,7 @@ export const sendVerificationCode = async (phone: string) => {
     phone,
   });
 
-  return error;
+  if (error) throw new Error('[sendVerificationCode] Error');
 };
 
 // 휴대폰 OTP 인증
@@ -88,4 +90,17 @@ export const verifyCode = async (phone: string, token: string) => {
   });
 
   return { data, error };
+};
+
+// 휴대폰 번호 중복검사
+export const isPhoneNumberExists = async (phoneNumber: string) => {
+  const { data, error } = await supabase
+    .from('profile')
+    .select('profile_id')
+    .eq('phone', phoneNumber)
+    .limit(1);
+
+  if (error) throw new Error('[isPhoneNumberExists] Error');
+
+  return data && data.length > 0;
 };
