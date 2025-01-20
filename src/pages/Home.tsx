@@ -29,10 +29,10 @@ function Home() {
     마감순: ['expiration_date', true],
   };
   const [sortLabel, setSortLabel] = useState('최신순');
+  const infinitePageSize = 5;
+  const observerRef = useRef<HTMLDivElement | null>(null);
   const {
     data: posts,
-    // error,
-    status,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -40,13 +40,11 @@ function Home() {
     `posts-${sortLabel}`,
     sortLabelList[sortLabel][0],
     sortLabelList[sortLabel][1],
-    5,
+    infinitePageSize,
   );
 
   const files = import.meta.glob('/src/assets/company/*');
   const companyImages = Object.keys(files);
-
-  const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!observerRef.current) return;

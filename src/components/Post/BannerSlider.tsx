@@ -66,7 +66,7 @@ function BannerSlider() {
             <img
               src={bannerImage}
               alt={`Slide ${index + 1}`}
-              className='h-auto w-full object-cover'
+              className='h-auto min-h-[60px] w-full object-cover'
             />
           </a>
         ))}

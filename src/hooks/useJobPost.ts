@@ -39,7 +39,7 @@ const fetchPost = async (
     throw new Error(`Error fetching posts: ${error.message}`);
   }
 
-  return transformPosts(data) || [];
+  return data ? transformPosts(data) : [];
 };
 
 export const useJobPost = (
@@ -49,12 +49,6 @@ export const useJobPost = (
   pageSize: number,
   queryOption: QueryType = DEFAULT_QUERY_OPTION,
 ) => {
-  // const { data, isLoading, error } = useQuery<GotchaPostType[]>({
-  //   queryKey: [queryKey],
-  //   queryFn: () => fetchPost(sortLabel, sortOrder),
-  //   ...queryOption,
-  // });
-
   const {
     data,
     error,
@@ -64,7 +58,7 @@ export const useJobPost = (
     isFetchingNextPage,
     status,
   } = useSuspenseInfiniteQuery<GotchaPostType[]>({
-    queryKey: [queryKey],
+    queryKey: [queryKey, sortLabel, sortOrder, pageSize],
     queryFn: ({ pageParam = 1 }) =>
       fetchPost(sortLabel, sortOrder, pageParam as number, pageSize),
     initialPageParam: 1,
