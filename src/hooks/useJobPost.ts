@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../api/supabase/supabaseClient';
 import { PlatformPostType } from '../types/platformPostType';
 import { transformPostFormat } from '../utils/transformPostFormat';
 import { GotchaPostType } from '../types/gotchaPostType';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 interface QueryType {
   staleTime?: number;
@@ -23,11 +23,17 @@ const transformPosts = (posts: PlatformPostType[]): GotchaPostType[] => {
   return transformed;
 };
 
-const fetchPost = async (sortLabel: string, sortOrder: boolean) => {
+const fetchPost = async (
+  sortLabel: string,
+  sortOrder: boolean,
+  pageParam: number,
+  pageSize: number,
+) => {
   const { data, error } = await supabase
     .from('post' as any)
     .select('*')
-    .order(sortLabel, { ascending: sortOrder });
+    .order(sortLabel, { ascending: sortOrder })
+    .range((pageParam - 1) * pageSize, pageParam * pageSize - 1);
 
   if (error) {
     throw new Error(`Error fetching posts: ${error.message}`);
@@ -40,13 +46,41 @@ export const useJobPost = (
   queryKey: string,
   sortLabel: string = 'posting_date',
   sortOrder: boolean = true,
+  pageSize: number,
   queryOption: QueryType = DEFAULT_QUERY_OPTION,
 ) => {
-  const { data, isLoading, error } = useQuery<GotchaPostType[]>({
+  // const { data, isLoading, error } = useQuery<GotchaPostType[]>({
+  //   queryKey: [queryKey],
+  //   queryFn: () => fetchPost(sortLabel, sortOrder),
+  //   ...queryOption,
+  // });
+
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery<GotchaPostType[]>({
     queryKey: [queryKey],
-    queryFn: () => fetchPost(sortLabel, sortOrder),
+    queryFn: ({ pageParam = 1 }) =>
+      fetchPost(sortLabel, sortOrder, pageParam as number, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.length < pageSize ? undefined : allPages.length + 1;
+    },
     ...queryOption,
   });
 
-  return { data, isLoading, error };
+  return {
+    data,
+    error,
+    status,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+  };
 };

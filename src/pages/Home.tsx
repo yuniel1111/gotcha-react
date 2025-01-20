@@ -1,11 +1,11 @@
 import '../css/tailwind.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import JobPostCard from '../components/Post/JobPostCard';
 import SortDropdown from '../components/Post/SortDropdown';
 import { GotchaPostType } from '../types/gotchaPostType';
 import { useJobPost } from '../hooks/useJobPost';
 import BannerSlider from '../components/Post/BannerSlider';
-import companySample from '../assets/company/company_sample.webp';
+import SkeletonJobPostCard from '../components/Post/SkeletonJobPostCard';
 // import { supabase } from '../api/supabase/supabaseClient';
 // import { useUserStore } from '../stores/useUserStore';
 
@@ -31,19 +31,41 @@ function Home() {
   const [sortLabel, setSortLabel] = useState('최신순');
   const {
     data: posts,
-    isLoading,
-    error,
+    // error,
+    status,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   } = useJobPost(
     `posts-${sortLabel}`,
     sortLabelList[sortLabel][0],
     sortLabelList[sortLabel][1],
+    5,
   );
 
   const files = import.meta.glob('/src/assets/company/*');
   const companyImages = Object.keys(files);
 
-  if (isLoading) return <p>Loading</p>;
-  if (error) return <p>Error: {error.message}</p>;
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!observerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (status === 'pending') return <p>Loading</p>;
+  // if (status === 'error') return <p>Error: {error.message}</p>;
 
   return (
     <div className='response-page-padding'>
@@ -59,15 +81,22 @@ function Home() {
         />
       </div>
       <ul className='flex flex-wrap'>
-        {posts &&
-          posts.map((post: GotchaPostType, idx: number) => (
+        {posts?.pages.map((page) =>
+          page.map((post: GotchaPostType, idx: number) => (
             <JobPostCard
-              key={idx}
+              key={post.post_id}
               post={post}
               companyImage={companyImages[idx]}
             />
+          )),
+        )}
+
+        {isFetchingNextPage &&
+          Array.from({ length: 5 }).map((_, index) => (
+            <SkeletonJobPostCard key={`skeleton-${index}`} />
           ))}
       </ul>
+      <div ref={observerRef} className='h-10'></div>
     </div>
   );
 }
