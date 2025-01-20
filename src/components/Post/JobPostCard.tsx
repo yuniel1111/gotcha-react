@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import companySample from '../../assets/company_sample.webp';
+import { useEffect, useId, useState } from 'react';
 import wantedTag from '../../assets/wanted_tag.png';
 import { FaBookmark } from 'react-icons/fa';
 import { FaRegBookmark } from 'react-icons/fa';
@@ -8,9 +7,15 @@ import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import JobPostDetailCard from './JobPostDetailCard';
 
-function JobPostCard({ post }: { post: GotchaPostType }) {
+function JobPostCard({
+  post,
+  companyImage,
+}: {
+  post: GotchaPostType;
+  companyImage: string;
+}) {
   // 임시
-  const profile_id = '1';
+  const profile_id = useId();
 
   const [isHovered, setIsHovered] = useState(false);
   const [isDetailFixed, setIsDetailFixed] = useState(false);
@@ -70,9 +75,9 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
 
       if (diff > 0 && diff < 10) setDeadline(`D-${diff}`);
       else if (diff < 0) {
-        // setDeadline(`~ ${month}.${day}(${weekday})`);
-        setDeadline('마감');
-        setIsExpired(true);
+        setDeadline(`~ ${month}.${day}(${weekday})`);
+        // setDeadline('마감');
+        // setIsExpired(true);
       } else setDeadline(`~ ${month}.${day}(${weekday})`);
     }
   }, [post?.deadline]);
@@ -95,13 +100,13 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
           {/* 공고 이미지 */}
           <div className='relative'>
             <img
-              className='aspect-[7/5] w-full rounded-t-md object-cover'
-              src={companySample}
+              className='aspect-[7/4] w-full rounded-t-md object-cover'
+              src={companyImage}
               alt='sample 이미지'
             />
             <div
               className={twMerge(
-                'absolute left-0 top-0 aspect-[7/5] w-full rounded-t-md bg-black',
+                'absolute left-0 top-0 aspect-[7/4] w-full rounded-t-md bg-black',
                 isExpired ? 'opacity-65' : 'opacity-30',
               )}
             ></div>
@@ -126,8 +131,8 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
           {!isExpired && (
             <button
               className={twMerge(
-                'absolute right-0 top-0 z-50 cursor-pointer p-2.5 text-[1.5rem]',
-                isHovered && 'opacity-25',
+                'absolute right-0 top-0 cursor-pointer p-2.5 text-[1.5rem]',
+                isHovered ? 'z-50 opacity-25' : '',
               )}
               onClick={handleBookmarked}
               onMouseOver={(e) => e.stopPropagation()} // 호버 이벤트 전파 방지

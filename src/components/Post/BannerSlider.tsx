@@ -2,16 +2,14 @@ import { useEffect, useState, useRef } from 'react';
 import { SlArrowLeft } from 'react-icons/sl';
 import { SlArrowRight } from 'react-icons/sl';
 
-interface BannerSliderProps {
-  images: string[];
-}
-
-function BannerSlider({ images }: BannerSliderProps) {
+function BannerSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalSlides = images.length;
+  const files = import.meta.glob('/src/assets/banner/*');
+  const bannerImages = Object.keys(files);
+  const totalSlides = bannerImages.length;
 
   // 자동 슬라이더 설정
   useEffect(() => {
@@ -53,7 +51,7 @@ function BannerSlider({ images }: BannerSliderProps) {
         className='flex transition-transform duration-500 ease-in-out'
         style={slideStyle}
       >
-        {images.map((image, index) => (
+        {bannerImages.map((image, index) => (
           <div key={index} className='min-w-full'>
             <img
               src={image}
@@ -83,7 +81,7 @@ function BannerSlider({ images }: BannerSliderProps) {
       </button>
 
       <div className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-lg bg-[rgb(0,0,0,0.4)] px-4 text-sm text-brand-white'>
-        {currentIndex + 1} / {images.length}
+        {currentIndex + 1} / {totalSlides}
       </div>
     </div>
   );
