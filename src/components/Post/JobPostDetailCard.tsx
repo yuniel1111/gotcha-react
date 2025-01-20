@@ -1,12 +1,14 @@
 import { GotchaPostType } from '../../types/gotchaPostType';
 
+interface JobPostDetailCardPropsType {
+  post: GotchaPostType;
+  handlePostLink: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+}
+
 function JobPostDetailCard({
   post,
   handlePostLink,
-}: {
-  post: GotchaPostType;
-  handlePostLink: (e: React.MouseEvent<HTMLAnchorElement>) => void;
-}) {
+}: JobPostDetailCardPropsType) {
   const detailPostData = [
     ['근무지', post.location],
     ['직무', post.job],
@@ -47,6 +49,7 @@ function JobPostDetailCard({
                 )}
               </td>
             </tr>
+
             {detailPostData.map((rowData) => (
               <tr>
                 <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-3 align-top'>
