@@ -1,4 +1,4 @@
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, useWatch } from 'react-hook-form';
 import gotchaLogoImage from '../assets/gotcha_logo.png';
 import { Link } from 'react-router-dom';
 import VerifyOtp from '../components/User/VerifyOtp';
@@ -10,37 +10,45 @@ interface FormDataType {
   verificationCode: string;
   verificationError: string;
   email: string;
+  isVerifiySuccess: boolean;
 }
 
 function FindId() {
   const methods = useForm<FormDataType>({
     mode: 'onBlur',
+    defaultValues: {
+      isVerifiySuccess: false,
+    },
   });
   const {
     register,
     handleSubmit,
     setError,
     setValue,
+    control,
     formState: { errors },
   } = methods;
 
-  const onSubmit = async (data: FormDataType) => {
-    const { data: userData, error: userError } = await getUserEmail(
-      data.name,
-      data.phoneNumber,
-    );
+  const isVerifySuccess = useWatch({
+    control,
+    name: 'isVerifiySuccess',
+  });
 
-    if (userError) {
+  const onSubmit = async (data: FormDataType) => {
+    const userEmail = await getUserEmail(data.name, data.phoneNumber);
+
+    if (!userEmail) {
       setError('verificationError', {
-        message: '가입 시 정보와 일치하지 않습니다.',
+        message: '가입한 정보와 일치하지 않습니다.',
       });
       setValue('email', '');
+      setValue('isVerifiySuccess', false);
+
       return;
     }
 
-    if (userData) {
-      setValue('email', userData.email);
-    }
+    setValue('email', userEmail);
+    setValue('isVerifiySuccess', true);
   };
 
   return (
@@ -97,6 +105,20 @@ function FindId() {
               인증 확인
             </button>
           </div>
+
+          {isVerifySuccess && (
+            <>
+              <div className='mt-8 h-[1px] w-full bg-brand-gray-4'></div>
+              <div className='mt-8'>
+                <input
+                  type='email'
+                  disabled={true}
+                  className={`w-full ${errors.verificationCode ? 'brand-main-input-error' : 'brand-main-input border border-brand-gray-2'}`}
+                  {...register('email')}
+                />
+              </div>
+            </>
+          )}
         </form>
       </FormProvider>
     </main>

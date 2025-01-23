@@ -60,6 +60,8 @@ function VerifyOtp({ isSignUp }: { isSignUp?: boolean }) {
       setError('phoneNumber', {
         message: '이미 가입된 번호입니다.',
       });
+
+      return;
     }
 
     await sendOtp(formatPhoneNumber(phoneNumber));

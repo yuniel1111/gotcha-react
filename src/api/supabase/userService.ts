@@ -105,12 +105,14 @@ export const isPhoneNumberExists = async (phoneNumber: string) => {
 
 // 이름과 번호로 일치하는 유저의 이메일 반환
 export const getUserEmail = async (name: string, phoneNumber: string) => {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('profile')
     .select('email')
     .eq('name', name)
     .eq('phone', phoneNumber)
-    .single();
+    .limit(1);
 
-  return { data, error };
+  const isExists = data && data.length !== 0;
+
+  return isExists && data[0].email;
 };

@@ -43,7 +43,7 @@ function SignIn() {
 
     if (userSignInError || !userSignInData?.session) {
       setError('emailPasswordError', {
-        message: '이메일 또는 비밀번호가 일치하지 않습니다.',
+        message: '이메일 또는 비밀번호를 확인해주세요.',
       });
       return;
     }
@@ -98,16 +98,25 @@ function SignIn() {
             type='email'
             placeholder='이메일'
             className='brand-main-input w-full'
-            {...register('email')}
+            {...register('email', { required: '이메일을 입력해주세요.' })}
           />
+          {errors.email && (
+            <p className='mt-1 text-xs text-red-500'>{errors.email.message}</p>
+          )}
         </div>
+
         <div className='mt-4'>
           <input
             type='password'
             placeholder='비밀번호'
             className='brand-main-input w-full'
-            {...register('password')}
+            {...register('password', { required: '비밀번호를 입력해주세요.' })}
           />
+          {errors.password && (
+            <p className='mt-1 text-xs text-red-500'>
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
         {errors.emailPasswordError && (
