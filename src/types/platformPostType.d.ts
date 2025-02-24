@@ -1,12 +1,21 @@
+export interface PlatformPostType {
+  post_id: string;
+  platform: string | null;
+  posting_date: string | null;
+  expiration_date: string;
+  content: Json | null;
+}
+
 export interface GoyongType {
-  [key: string]: string;
+  [key: string]: any;
 }
 
 export interface JobkoreaType {
-  [key: string]: string;
+  [key: string]: any;
 }
 
 export interface SaraminType {
+  id: number;
   url: string;
   active: number;
   company: {
@@ -25,25 +34,25 @@ export interface SaraminType {
       code: string;
       name: string;
     };
-    jobType: {
+    'job-type': {
       code: string;
       name: string;
     };
-    jobMidCode: {
+    'job-mid-code': {
       code: string;
       name: string;
     };
-    jobCode: {
+    'job-code': {
       code: string;
       name: string;
     };
-    experienceLevel: {
+    'experience-level': {
       code: number;
       min: number;
       max: number;
       name: string;
     };
-    requiredEducationLevel: {
+    'required-education-level': {
       code: string;
       name: string;
     };
@@ -54,25 +63,16 @@ export interface SaraminType {
     name: string;
   };
   id: string;
-  postingTimestamp: string;
-  postingDate: string;
-  modificationTimestamp: string;
-  openingTimestamp: string;
-  expirationTimestamp: string;
-  expirationDate: string;
-  closeType: {
+  'posting-timestamp': string;
+  'posting-date': string;
+  'modification-timestamp': string;
+  'opening-timestamp': string;
+  'expiration-timestamp': string;
+  'expiration-date': string;
+  'close-type': {
     code: string;
     name: string;
   };
-  readCnt: string;
-  applyCnt: string;
-}
-
-export interface SaraminJsonType {
-  jobs: {
-    count: number;
-    start: number;
-    total: string;
-    job: SaraminType[];
-  };
+  'read-cnt': string;
+  'apply-cnt': string;
 }
