@@ -1,23 +1,35 @@
 import { useEffect, useState, useRef } from 'react';
 import { SlArrowLeft } from 'react-icons/sl';
 import { SlArrowRight } from 'react-icons/sl';
+import jobkoreaBanner from '../../assets/banner/jobkorea_banner.png';
+import jobplanetBanner from '../../assets/banner/jobplanet_banner.png';
+import saraminBanner from '../../assets/banner/saramin_banner.png';
 
-interface BannerSliderProps {
-  images: string[];
-}
-
-function BannerSlider({ images }: BannerSliderProps) {
+function BannerSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const sliderRef = useRef<HTMLDivElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const totalSlides = images.length;
+  const bannerInfo = [
+    [saraminBanner, 'https://www.saramin.co.kr/'],
+    [jobkoreaBanner, 'https://www.jobkorea.co.kr/'],
+    [jobplanetBanner, 'https://www.jobplanet.co.kr'],
+  ];
+  const totalSlides = bannerInfo.length;
 
-  // 자동 슬라이더 설정
-  useEffect(() => {
-    startAutoSlide();
-    return stopAutoSlide;
-  }, [currentIndex]);
+  const slideStyle = {
+    transform: `translateX(-${currentIndex * 100}%)`,
+  };
+
+  const goToNextSlide = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+  };
+
+  const goToPrevSlide = () => {
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? totalSlides - 1 : prevIndex - 1,
+    );
+  };
 
   const startAutoSlide = () => {
     stopAutoSlide();
@@ -32,35 +44,31 @@ function BannerSlider({ images }: BannerSliderProps) {
     }
   };
 
-  const goToNextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-  };
-
-  const goToPrevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? totalSlides - 1 : prevIndex - 1,
-    );
-  };
-
-  const slideStyle = {
-    transform: `translateX(-${currentIndex * 100}%)`,
-  };
+  useEffect(() => {
+    startAutoSlide();
+    return stopAutoSlide;
+  }, [currentIndex]);
 
   return (
-    <div className='relative w-full overflow-hidden'>
+    <aside className='relative w-full overflow-hidden py-6'>
       <div
         ref={sliderRef}
         className='flex transition-transform duration-500 ease-in-out'
         style={slideStyle}
       >
-        {images.map((image, index) => (
-          <div key={index} className='min-w-full'>
+        {bannerInfo.map(([bannerImage, bannerUrl], index) => (
+          <a
+            href={bannerUrl}
+            target='_blank'
+            key={index}
+            className='min-w-full'
+          >
             <img
-              src={image}
+              src={bannerImage}
               alt={`Slide ${index + 1}`}
-              className='h-auto w-full object-cover'
+              className='h-auto min-h-[60px] w-full object-cover'
             />
-          </div>
+          </a>
         ))}
       </div>
 
@@ -82,10 +90,10 @@ function BannerSlider({ images }: BannerSliderProps) {
         <SlArrowRight />
       </button>
 
-      <div className='absolute bottom-2 left-1/2 -translate-x-1/2 rounded-lg bg-[rgb(0,0,0,0.4)] px-4 text-sm text-brand-white'>
-        {currentIndex + 1} / {images.length}
+      <div className='absolute bottom-8 left-1/2 -translate-x-1/2 rounded-lg bg-[rgb(0,0,0,0.4)] px-4 text-sm text-brand-white'>
+        {currentIndex + 1} / {totalSlides}
       </div>
-    </div>
+    </aside>
   );
 }
 

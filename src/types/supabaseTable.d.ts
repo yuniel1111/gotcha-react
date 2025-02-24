@@ -13,22 +13,32 @@ export type Database = {
         Row: {
           bookmark_id: number;
           created_at: string;
-          details: Json | null;
-          profile_id: number;
+          post: Json | null;
+          post_id: number;
+          profile_id: string;
         };
         Insert: {
           bookmark_id?: number;
           created_at?: string;
-          details?: Json | null;
-          profile_id: number;
+          post?: Json | null;
+          post_id?: number;
+          profile_id?: string;
         };
         Update: {
           bookmark_id?: number;
           created_at?: string;
-          details?: Json | null;
-          profile_id?: number;
+          post?: Json | null;
+          post_id?: number;
+          profile_id?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: 'bookmark_post_id_fkey';
+            columns: ['post_id'];
+            isOneToOne: false;
+            referencedRelation: 'post';
+            referencedColumns: ['post_id'];
+          },
           {
             foreignKeyName: 'bookmark_profile_id_fkey';
             columns: ['profile_id'];
@@ -106,7 +116,7 @@ export type Database = {
           job: Json | null;
           location: Json | null;
           platform_type: string;
-          profile_id: number;
+          profile_id: string | null;
           salary: Json | null;
         };
         Insert: {
@@ -122,7 +132,7 @@ export type Database = {
           job?: Json | null;
           location?: Json | null;
           platform_type?: string;
-          profile_id: number;
+          profile_id?: string | null;
           salary?: Json | null;
         };
         Update: {
@@ -138,7 +148,7 @@ export type Database = {
           job?: Json | null;
           location?: Json | null;
           platform_type?: string;
-          profile_id?: number;
+          profile_id?: string | null;
           salary?: Json | null;
         };
         Relationships: [
@@ -193,21 +203,21 @@ export type Database = {
           created_at: string;
           files_url: Json | null;
           notepad_id: number;
-          profile_id: number;
+          profile_id: string | null;
         };
         Insert: {
           content?: string | null;
           created_at?: string;
           files_url?: Json | null;
           notepad_id?: number;
-          profile_id: number;
+          profile_id?: string | null;
         };
         Update: {
           content?: string | null;
           created_at?: string;
           files_url?: Json | null;
           notepad_id?: number;
-          profile_id?: number;
+          profile_id?: string | null;
         };
         Relationships: [
           {
@@ -219,6 +229,30 @@ export type Database = {
           },
         ];
       };
+      post: {
+        Row: {
+          content: Json | null;
+          expiration_date: string;
+          platform: string;
+          post_id: number;
+          posting_date: string;
+        };
+        Insert: {
+          content?: Json | null;
+          expiration_date?: string;
+          platform?: string;
+          post_id?: number;
+          posting_date?: string;
+        };
+        Update: {
+          content?: Json | null;
+          expiration_date?: string;
+          platform?: string;
+          post_id?: number;
+          posting_date?: string;
+        };
+        Relationships: [];
+      };
       profile: {
         Row: {
           created_at: string;
@@ -226,7 +260,8 @@ export type Database = {
           is_deleted: boolean;
           name: string;
           password: string;
-          profile_id: number;
+          phone: string | null;
+          profile_id: string;
           updated_at: string;
         };
         Insert: {
@@ -235,7 +270,8 @@ export type Database = {
           is_deleted?: boolean;
           name?: string;
           password?: string;
-          profile_id?: number;
+          phone?: string | null;
+          profile_id?: string;
           updated_at?: string;
         };
         Update: {
@@ -244,7 +280,8 @@ export type Database = {
           is_deleted?: boolean;
           name?: string;
           password?: string;
-          profile_id?: number;
+          phone?: string | null;
+          profile_id?: string;
           updated_at?: string;
         };
         Relationships: [];
@@ -260,7 +297,7 @@ export type Database = {
           introduction: string | null;
           name: string | null;
           phone: string | null;
-          profile_id: number;
+          profile_id: string | null;
           resume_id: number;
           skills: Json | null;
           title: string;
@@ -276,7 +313,7 @@ export type Database = {
           introduction?: string | null;
           name?: string | null;
           phone?: string | null;
-          profile_id: number;
+          profile_id?: string | null;
           resume_id?: number;
           skills?: Json | null;
           title?: string;
@@ -292,7 +329,7 @@ export type Database = {
           introduction?: string | null;
           name?: string | null;
           phone?: string | null;
-          profile_id?: number;
+          profile_id?: string | null;
           resume_id?: number;
           skills?: Json | null;
           title?: string;

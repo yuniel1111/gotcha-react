@@ -1,47 +1,21 @@
 import { useEffect, useState } from 'react';
-import companySample from '../../assets/company_sample.webp';
-import wantedTag from '../../assets/wanted_tag.png';
-import { FaBookmark } from 'react-icons/fa';
-import { FaRegBookmark } from 'react-icons/fa';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { twMerge } from 'tailwind-merge';
-import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import JobPostDetailCard from './JobPostDetailCard';
+import JobPostBookmarkButton from './JobPostBookmarkButton';
+import PlatformTagImage from './PlatformTagImage';
 
-function JobPostCard({ post }: { post: GotchaPostType }) {
-  // 임시
-  const profile_id = '1';
+interface JobPostCardPropsType {
+  post: GotchaPostType;
+  companyImage: string;
+}
 
+function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDetailFixed, setIsDetailFixed] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+
   const [deadline, setDeadline] = useState<string>('');
   const [isExpired, setIsExpired] = useState(false);
-  const { addMutation, deleteMutation } = useToggleBookmark(
-    post.post_id,
-    profile_id,
-    post,
-  );
-
-  const handleBookmarked = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    if (isBookmarked) {
-      try {
-        await deleteMutation.mutateAsync(post.post_id);
-        setIsBookmarked(false);
-      } catch (error) {
-        console.error('북마크 삭제 중 에러:', error);
-      }
-    } else {
-      try {
-        await addMutation.mutateAsync(post.post_id);
-        setIsBookmarked(true);
-      } catch (error) {
-        console.error('북마크 추가 중 에러:', error);
-      }
-    }
-  };
 
   const handleHoverToOpenDetail = () => {
     if (isDetailFixed) return;
@@ -84,96 +58,80 @@ function JobPostCard({ post }: { post: GotchaPostType }) {
   };
 
   return (
-    <>
-      <li className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'>
-        <div
-          className='relative'
-          onClick={handleClickToOpenDetail}
-          onMouseOver={handleHoverToOpenDetail}
-          onMouseOut={handleHoverToOpenDetail}
-        >
-          {/* 공고 이미지 */}
-          <div className='relative'>
-            <img
-              className='aspect-[7/5] w-full rounded-t-md object-cover'
-              src={companySample}
-              alt='sample 이미지'
-            />
-            <div
-              className={twMerge(
-                'absolute left-0 top-0 aspect-[7/5] w-full rounded-t-md bg-black',
-                isExpired ? 'opacity-65' : 'opacity-30',
-              )}
-            ></div>
-            <span
-              className={twMerge(
-                'absolute bg-gray-900 px-2 text-sm tracking-wide text-brand-white',
-                isExpired
-                  ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
-                  : 'bottom-2 right-3',
-              )}
-            >
-              {isExpired ? '마감된 공고' : deadline}
-            </span>
-          </div>
-
-          {/* 상세 정보 팝업 */}
-          {isHovered && (
-            <JobPostDetailCard post={post} handlePostLink={handlePostLink} />
-          )}
-
-          {/* 북마크 버튼 */}
-          {!isExpired && (
-            <button
-              className={twMerge(
-                'absolute right-0 top-0 z-50 cursor-pointer p-2.5 text-[1.5rem]',
-                isHovered && 'opacity-25',
-              )}
-              onClick={handleBookmarked}
-              onMouseOver={(e) => e.stopPropagation()} // 호버 이벤트 전파 방지
-              onMouseOut={(e) => e.stopPropagation()} // 마우스 아웃 이벤트 전파 방지
-            >
-              {isBookmarked ? (
-                <FaBookmark className='text-brand-sub' />
-              ) : (
-                <FaRegBookmark className='text-brand-white' />
-              )}
-            </button>
-          )}
-
-          {/* 공고 정보 */}
-          <div className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
-            <p className='font-bol truncate text-nowrap pb-1 text-base'>
-              {post?.title}
-            </p>
-            <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
-              <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
-                <span className='text-brand-black'>{post?.company}</span>
-                {post?.company && post?.location && (
-                  <span className='px-[6px]'>|</span>
-                )}
-                <span className='truncate'>{post?.location}</span>
-              </p>
-              <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
-                <span>{post?.job}</span>
-                {post?.job && post?.experience && (
-                  <span className='px-[6px]'>|</span>
-                )}
-                <span className='truncate'>{post?.experience}</span>
-              </p>
-            </div>
-          </div>
+    <li className='responsive-post-width relative my-3 cursor-pointer list-none px-2 py-2'>
+      <div
+        className='relative'
+        onClick={handleClickToOpenDetail}
+        onMouseOver={handleHoverToOpenDetail}
+        onMouseOut={handleHoverToOpenDetail}
+      >
+        {/* 공고 이미지 */}
+        <div className='relative'>
+          <img
+            className='aspect-[7/4] w-full rounded-t-md object-cover'
+            src={companyImage}
+            alt='sample 이미지'
+          />
+          <div
+            className={twMerge(
+              'absolute left-0 top-0 aspect-[7/4] w-full rounded-t-md bg-black',
+              isExpired ? 'opacity-65' : 'opacity-30',
+            )}
+          ></div>
+          <span
+            className={twMerge(
+              'absolute rounded-md bg-black px-2 py-1 text-sm tracking-wide text-brand-white',
+              isExpired
+                ? 'text-md left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-nowrap bg-transparent'
+                : 'bottom-2 right-3 opacity-70',
+            )}
+          >
+            {isExpired ? '마감된 공고' : deadline}
+          </span>
         </div>
-        <img
-          className={twMerge(
-            'absolute -left-1.5 -top-1.5 w-20',
-            isHovered && 'z-20',
-          )}
-          src={wantedTag}
-          alt='wanted logo'
+
+        {/* 상세 정보 팝업 */}
+        {isHovered && (
+          <JobPostDetailCard post={post} handlePostLink={handlePostLink} />
+        )}
+
+        {/* 북마크 버튼 */}
+        <JobPostBookmarkButton
+          post={post}
+          isHovered={isHovered}
+          isExpired={isExpired}
         />
-      </li>
-    </>
+
+        {/* 공고 정보 */}
+        <article className='rounded-b-md border-x border-b border-brand-gray-1 px-3 py-2'>
+          <p className='font-bol truncate text-nowrap pb-1 text-base'>
+            {post?.title}
+          </p>
+          <div className='flex flex-col gap-0.5 truncate pb-1 text-[0.875rem] text-brand-gray-4'>
+            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+              <span className='text-brand-black'>{post?.company}</span>
+              {post?.company && post?.location && (
+                <span className='px-[6px]'>|</span>
+              )}
+              <span className='truncate'>{post?.location}</span>
+            </p>
+            <p className='nowrap flex truncate text-nowrap text-[0.875rem] text-brand-gray-4'>
+              <span>{post?.job}</span>
+              {post?.job && post?.experience && (
+                <span className='px-[6px]'>|</span>
+              )}
+              <span className='truncate'>{post?.experience}</span>
+            </p>
+          </div>
+        </article>
+      </div>
+
+      {/* 플랫폼 종류 */}
+      <PlatformTagImage
+        platform_type={post.platform_type}
+        isHovered={isHovered}
+      />
+    </li>
   );
 }
 export default JobPostCard;
