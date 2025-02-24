@@ -7,11 +7,13 @@ const addFetch = async (
   profile_id: string,
   post: GotchaPostType,
 ) => {
+  const postId = Number(post_id);
+
   const { error } = await supabase.from('bookmark').insert([
     {
-      post_id,
+      post_id: postId,
       profile_id,
-      post,
+      post: JSON.parse(JSON.stringify(post)),
     },
   ]);
 
