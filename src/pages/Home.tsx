@@ -11,16 +11,6 @@ export interface SortLabelListType {
 }
 
 function Home() {
-  // const { setUserSession, setUserLogin } = useUserStore(
-  //   (state) => state.actions,
-  // );
-
-  // const handleLogout = async () => {
-  //   await supabase.auth.signOut();
-  //   setUserSession(null);
-  //   setUserLogin(false);
-  // };
-
   const sortLabelList: SortLabelListType = {
     최신순: ['posting_date', true],
     마감순: ['expiration_date', true],
