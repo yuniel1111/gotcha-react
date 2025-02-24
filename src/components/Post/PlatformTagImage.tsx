@@ -15,6 +15,7 @@ function PlatformTagImage({
         className={twMerge(
           'absolute -left-1.5 -top-1.5 w-20',
           isHovered && 'z-20',
+          platform_type && '', // 임시
         )}
         src={wantedTag}
         alt='wanted logo'
