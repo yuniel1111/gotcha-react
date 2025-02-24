@@ -1,21 +1,23 @@
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import { GotchaPostType } from '../../types/gotchaPostType';
+import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
 
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
   isHovered: boolean;
   isExpired: boolean;
 }
+
 function JobPostBookmarkButton({
   post,
   isHovered,
   isExpired,
 }: JobPostBookmarkButtonPropsType) {
   // 임시
-  const profile_id = useId();
+  const profile_id = useProfileIdTestStore((state) => state.profile_id);
 
   const [isBookmarked, setIsBookmarked] = useState(false);
   const { addMutation, deleteMutation } = useToggleBookmark(
@@ -29,14 +31,14 @@ function JobPostBookmarkButton({
 
     if (isBookmarked) {
       try {
-        await deleteMutation.mutateAsync(post.post_id);
+        await deleteMutation.mutateAsync();
         setIsBookmarked(false);
       } catch (error) {
         console.error('북마크 삭제 중 에러:', error);
       }
     } else {
       try {
-        await addMutation.mutateAsync(post.post_id);
+        await addMutation.mutateAsync();
         setIsBookmarked(true);
       } catch (error) {
         console.error('북마크 추가 중 에러:', error);
