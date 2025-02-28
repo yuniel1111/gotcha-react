@@ -8,9 +8,14 @@ import PlatformTagImage from './PlatformTagImage';
 interface JobPostCardPropsType {
   post: GotchaPostType;
   companyImage: string;
+  initialBookmark: boolean;
 }
 
-function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
+function JobPostCard({
+  post,
+  companyImage,
+  initialBookmark,
+}: JobPostCardPropsType) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDetailFixed, setIsDetailFixed] = useState(false);
 
@@ -29,7 +34,7 @@ function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
 
   useEffect(() => {
     if (post?.deadline) {
-      const deadlineDate = new Date(post.deadline.toLocaleDateString());
+      const deadlineDate = new Date(post.deadline);
       const todayWithoutTimeDate = new Date(new Date().toLocaleDateString());
       const diff = Math.floor(
         (deadlineDate.getTime() - todayWithoutTimeDate.getTime()) /
@@ -100,6 +105,7 @@ function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
           post={post}
           isHovered={isHovered}
           isExpired={isExpired}
+          initialBookmark={initialBookmark}
         />
 
         {/* 공고 정보 */}

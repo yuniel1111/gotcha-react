@@ -13,7 +13,10 @@ function JobPostDetailCard({
     ['근무지', post.location],
     ['직무', post.job],
     ['경력', post.experience],
-    ['마감일', post.deadline.toLocaleDateString()],
+    [
+      '마감일',
+      post.deadline ? new Date(post.deadline).toLocaleDateString() : '미정',
+    ],
     ['연봉', post.salary],
     ['기업형태', post.company_type],
     ['고용형태', post.employment_type],

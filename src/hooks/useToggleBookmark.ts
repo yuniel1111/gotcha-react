@@ -13,7 +13,7 @@ const addFetch = async (
     {
       post_id: postId,
       profile_id,
-      post: JSON.parse(JSON.stringify(post)),
+      post: JSON.parse(JSON.stringify({ ...post, isBookmarked: true })),
     },
   ]);
 

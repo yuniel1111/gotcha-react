@@ -15,4 +15,5 @@ export interface GotchaPostType {
   education: string;
   post_url: string;
   isBookmarked: boolean;
+  created_at?: Date;
 }
