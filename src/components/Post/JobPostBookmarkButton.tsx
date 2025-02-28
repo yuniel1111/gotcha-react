@@ -10,28 +10,22 @@ interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
   isHovered: boolean;
   isExpired: boolean;
-  initialBookmark: boolean;
 }
 
 function JobPostBookmarkButton({
   post,
   isHovered,
   isExpired,
-  initialBookmark,
 }: JobPostBookmarkButtonPropsType) {
   // 임시
   const profile_id = useProfileIdTestStore((state) => state.profile_id);
 
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
   const { addMutation, deleteMutation } = useToggleBookmark(
     post.post_id,
     profile_id,
     post,
   );
-
-  useEffect(() => {
-    setIsBookmarked(initialBookmark);
-  }, []);
 
   const handleBookmarked = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

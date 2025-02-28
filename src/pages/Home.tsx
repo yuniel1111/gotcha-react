@@ -26,6 +26,8 @@ function Home() {
   );
   const posts = data ? data.pages.flat() : [];
 
+  console.log('posts', posts);
+
   return (
     <div className='response-page-padding'>
       <BannerSlider />
@@ -43,7 +45,6 @@ function Home() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          initialBookmark={false}
         />
       </main>
     </div>

@@ -8,14 +8,9 @@ import PlatformTagImage from './PlatformTagImage';
 interface JobPostCardPropsType {
   post: GotchaPostType;
   companyImage: string;
-  initialBookmark: boolean;
 }
 
-function JobPostCard({
-  post,
-  companyImage,
-  initialBookmark,
-}: JobPostCardPropsType) {
+function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
   const [isHovered, setIsHovered] = useState(false);
   const [isDetailFixed, setIsDetailFixed] = useState(false);
 
@@ -105,7 +100,6 @@ function JobPostCard({
           post={post}
           isHovered={isHovered}
           isExpired={isExpired}
-          initialBookmark={initialBookmark}
         />
 
         {/* 공고 정보 */}

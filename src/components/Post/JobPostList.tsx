@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import SkeletonJobPostCard from './SkeletonJobPostCard';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import JobPostCard from './JobPostCard';
+import { supabase } from '../../api/supabase/supabaseClient';
+import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
 
 interface JobPostListType {
   posts: GotchaPostType[];
   fetchNextPage: any;
   hasNextPage: boolean;
   isFetchingNextPage: boolean;
-  initialBookmark: boolean;
 }
 
 function JobPostList({
@@ -16,7 +17,6 @@ function JobPostList({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
-  initialBookmark,
 }: JobPostListType) {
   const files = import.meta.glob('/src/assets/company/*');
   const companyImages = Object.keys(files);
@@ -41,12 +41,11 @@ function JobPostList({
 
   return (
     <ul className='flex flex-wrap'>
-      {posts?.map((post, idx) => (
+      {posts?.map((post, index) => (
         <JobPostCard
-          key={post.post_id}
+          key={`${post.post_id}-${index}`}
           post={post}
-          companyImage={companyImages[idx]}
-          initialBookmark={initialBookmark}
+          companyImage={companyImages[index]}
         />
       ))}
 

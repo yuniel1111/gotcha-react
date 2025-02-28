@@ -22,7 +22,6 @@ function Bookmark() {
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
-          initialBookmark={true}
         />
       </main>
     </div>
