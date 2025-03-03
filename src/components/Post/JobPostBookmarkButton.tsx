@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
-import ConfirmPopup from '../Common/ConfirmPopup';
+import ConfirmModal from '../Common/ConfirmModal';
 import { useNavigateStore } from '../../stores/useNavigateStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
@@ -21,8 +22,8 @@ function JobPostBookmarkButton({
   // 임시
   const profile_id = useProfileIdTestStore((state) => state.profile_id);
 
-  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const currentPage = useNavigateStore((state) => state.isActive);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
   const { addMutation, deleteMutation } = useToggleBookmark(
@@ -35,28 +36,41 @@ function JobPostBookmarkButton({
     e.stopPropagation();
 
     if (currentPage[1]) {
-      setIsConfirmPopupOpen(!isConfirmPopupOpen);
-    }
-
-    if (isBookmarked) {
-      try {
-        setIsBookmarked(false);
-        await deleteMutation.mutateAsync();
-      } catch (error) {
-        console.error('북마크 삭제 중 에러:', error);
-      }
+      setIsConfirmModalOpen(!isConfirmModalOpen);
     } else {
-      try {
-        setIsBookmarked(true);
-        await addMutation.mutateAsync();
-      } catch (error) {
-        console.error('북마크 추가 중 에러:', error);
+      if (isBookmarked) {
+        try {
+          setIsBookmarked(false);
+          await deleteMutation.mutateAsync();
+        } catch (error) {
+          console.error('북마크 삭제 중 에러:', error);
+        }
+      } else {
+        try {
+          setIsBookmarked(true);
+          await addMutation.mutateAsync();
+        } catch (error) {
+          console.error('북마크 추가 중 에러:', error);
+        }
       }
     }
   };
 
-  const handleUnbookmark = () => {
-    setIsConfirmPopupOpen(false);
+  const queryClient = useQueryClient();
+
+  const handleUnbookmark = async () => {
+    try {
+      setIsBookmarked(false);
+      await deleteMutation.mutateAsync();
+    } catch (error) {
+      console.error('북마크 삭제 중 에러:', error);
+    }
+
+    queryClient.invalidateQueries({
+      queryKey: ['bookmark', 'created_at', true, 10],
+    });
+
+    setIsConfirmModalOpen(false);
   };
 
   return (
@@ -77,11 +91,12 @@ function JobPostBookmarkButton({
             <FaRegBookmark className='text-brand-white' />
           )}
 
-          {isConfirmPopupOpen && (
-            <ConfirmPopup
-              setIsConfirmPopupOpen={setIsConfirmPopupOpen}
-              confirmText={'북마크를 모두 해제하시겠습니까?'}
+          {isConfirmModalOpen && (
+            <ConfirmModal
+              setIsConfirmModalOpen={setIsConfirmModalOpen}
               iconName={'bookmark'}
+              confirmText={'북마크를 해제하시겠습니까?'}
+              rightText={'해제'}
               rightHandle={handleUnbookmark}
             />
           )}
