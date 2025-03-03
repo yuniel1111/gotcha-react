@@ -27,10 +27,7 @@ export default function SortDropdownMenu({
 
   return (
     <div className='relative'>
-      <button
-        onClick={toggleMenu}
-        className='flex h-10 w-20 items-center justify-center gap-2 rounded-md border border-brand-gray-1 text-sm text-brand-gray-4'
-      >
+      <button onClick={toggleMenu} className='post-setting-button'>
         <p>{sortLabel}</p>
         <IoIosArrowDown />
       </button>

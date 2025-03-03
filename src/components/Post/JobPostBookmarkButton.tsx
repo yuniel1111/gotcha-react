@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
-import { supabase } from '../../api/supabase/supabaseClient';
 
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;

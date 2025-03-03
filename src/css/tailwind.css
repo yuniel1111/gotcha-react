@@ -41,7 +41,7 @@
   }
 
   .brand-main-input-error {
-    @apply border-brand-red-1 rounded-md border px-[12px] py-[10px] text-[16px] placeholder:text-sm;
+    @apply rounded-md border border-brand-red-1 px-[12px] py-[10px] text-[16px] placeholder:text-sm;
   }
 
   .brand-main-input:focus {
@@ -82,5 +82,26 @@
     @media (max-width: 430px) {
       width: 100%;
     }
+  }
+
+  .post-setting-button {
+    display: flex;
+    height: 2.5rem;
+    min-width: 5rem;
+    padding: 0 0.75rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #d0d0d0;
+    font-size: 0.875rem;
+    color: #696969;
+  }
+  .post-setting-button:active {
+    border-color: #4280ef;
+    color: #4280ef;
+  }
+  .post-setting-button:hover {
+    background-color: #f3f4f6;
   }
 }

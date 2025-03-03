@@ -1,9 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import SkeletonJobPostCard from './SkeletonJobPostCard';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import JobPostCard from './JobPostCard';
-import { supabase } from '../../api/supabase/supabaseClient';
-import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
 
 interface JobPostListType {
   posts: GotchaPostType[];

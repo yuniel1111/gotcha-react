@@ -13,9 +13,9 @@ function Bookmark() {
       <main>
         <header className='flex justify-between'>
           <h1 className='page-title'>관심공고</h1>
-          <div>
-            <button>마감된 공고 해제</button>
-            <button>전체 해제</button>
+          <div className='flex gap-2'>
+            <button className='post-setting-button'>마감된 공고 해제</button>
+            <button className='post-setting-button'>전체 해제</button>
           </div>
         </header>
         <JobPostList
