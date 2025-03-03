@@ -4,6 +4,8 @@ import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
+import ConfirmPopup from '../Common/ConfirmPopup';
+import { useNavigateStore } from '../../stores/useNavigateStore';
 
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
@@ -19,6 +21,9 @@ function JobPostBookmarkButton({
   // 임시
   const profile_id = useProfileIdTestStore((state) => state.profile_id);
 
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+  const currentPage = useNavigateStore((state) => state.isActive);
+
   const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
   const { addMutation, deleteMutation } = useToggleBookmark(
     post.post_id,
@@ -28,6 +33,10 @@ function JobPostBookmarkButton({
 
   const handleBookmarked = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
+    if (currentPage[1]) {
+      setIsConfirmPopupOpen(!isConfirmPopupOpen);
+    }
 
     if (isBookmarked) {
       try {
@@ -46,6 +55,10 @@ function JobPostBookmarkButton({
     }
   };
 
+  const handleUnbookmark = () => {
+    setIsConfirmPopupOpen(false);
+  };
+
   return (
     <>
       {!isExpired && (
@@ -62,6 +75,15 @@ function JobPostBookmarkButton({
             <FaBookmark className='text-brand-sub' />
           ) : (
             <FaRegBookmark className='text-brand-white' />
+          )}
+
+          {isConfirmPopupOpen && (
+            <ConfirmPopup
+              setIsConfirmPopupOpen={setIsConfirmPopupOpen}
+              confirmText={'북마크를 모두 해제하시겠습니까?'}
+              iconName={'bookmark'}
+              rightHandle={handleUnbookmark}
+            />
           )}
         </button>
       )}
