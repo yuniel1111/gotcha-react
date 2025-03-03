@@ -2,6 +2,7 @@ import JobPostList from '../components/Post/JobPostList';
 import { useBookmarkPost } from '../hooks/useBookmarkPost';
 
 function Bookmark() {
+  console.log('Bookmark rendering');
   const infinitePageSize = 5;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useBookmarkPost({ queryKey: 'bookmark', pageSize: infinitePageSize });

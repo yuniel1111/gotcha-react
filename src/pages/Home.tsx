@@ -25,8 +25,7 @@ function Home() {
     infinitePageSize,
   );
   const posts = data ? data.pages.flat() : [];
-
-  console.log('posts', posts);
+  console.log('Home rendering', posts);
 
   return (
     <div className='response-page-padding'>

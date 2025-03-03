@@ -59,6 +59,7 @@ const fetchPost = async (
     throw new Error(`Error fetching posts: ${error.message}`);
   }
 
+  console.log('postIdList', postIdList);
   const posts = data
     ? data.map((post) => ({
         ...post,
@@ -86,7 +87,7 @@ export const useJobPost = (
     isFetchingNextPage,
     status,
   } = useSuspenseInfiniteQuery<GotchaPostType[]>({
-    queryKey: [queryKey, sortLabel, sortOrder, pageSize],
+    queryKey: [queryKey, profile_id, sortLabel, sortOrder, pageSize],
     queryFn: ({ pageParam = 1 }) =>
       fetchPost(
         profile_id,

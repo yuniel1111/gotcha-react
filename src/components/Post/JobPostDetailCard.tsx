@@ -53,8 +53,8 @@ function JobPostDetailCard({
               </td>
             </tr>
 
-            {detailPostData.map((rowData) => (
-              <tr>
+            {detailPostData.map((rowData, index) => (
+              <tr key={index}>
                 <th className='border-brand-whitetext-center text-nowrap border-r py-1 pr-3 align-top'>
                   {rowData[0]}
                 </th>
