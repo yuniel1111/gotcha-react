@@ -29,7 +29,7 @@ function ConfirmModal({
         <div className='flex items-center justify-center'>
           <img src={iconName === 'bookmark' ? WarningIcon : SadIcon} alt='' />
         </div>
-        <div>
+        <div className='text-center'>
           <p className='text-lg font-semibold'>{confirmText}</p>
           {additionalText && (
             <p className='mt-1 text-sm text-rose-500'>{additionalText}</p>

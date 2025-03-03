@@ -66,8 +66,8 @@ function JobPostBookmarkButton({
       console.error('북마크 삭제 중 에러:', error);
     }
 
-    queryClient.invalidateQueries({
-      queryKey: ['bookmark', 'created_at', true, 10],
+    await queryClient.invalidateQueries({
+      queryKey: ['bookmark'],
     });
 
     setIsConfirmModalOpen(false);
