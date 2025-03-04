@@ -59,7 +59,6 @@ const fetchPost = async (
     throw new Error(`Error fetching posts: ${error.message}`);
   }
 
-  console.log('postIdList', postIdList);
   const posts = data
     ? data.map((post) => ({
         ...post,

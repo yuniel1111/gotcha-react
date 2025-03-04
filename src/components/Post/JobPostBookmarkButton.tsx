@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
@@ -75,7 +75,8 @@ function JobPostBookmarkButton({
 
   return (
     <>
-      {!isExpired && (
+      {true && (
+        // {!isExpired && (
         <button
           className={twMerge(
             'absolute right-0 top-0 cursor-pointer p-2.5 text-[1.5rem]',

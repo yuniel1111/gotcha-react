@@ -1,12 +1,57 @@
+import { useState } from 'react';
+import ConfirmModal from '../components/Common/ConfirmModal';
 import JobPostList from '../components/Post/JobPostList';
 import { useBookmarkPost } from '../hooks/useBookmarkPost';
+import { useProfileIdTestStore } from '../stores/useProfileIdTestStore';
+import { supabase } from '../api/supabase/supabaseClient';
+import { QueryClient, useMutation } from '@tanstack/react-query';
 
 function Bookmark() {
-  console.log('Bookmark rendering');
+  console.log('BOokmark Rendering');
   const infinitePageSize = 5;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useBookmarkPost({ queryKey: 'bookmark', pageSize: infinitePageSize });
   const bookmarkedPosts = data ? data.pages.flat() : [];
+
+  const profile_id = useProfileIdTestStore((state) => state.profile_id);
+  const queryClient = new QueryClient();
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [modalCategory, setModalCategory] = useState('expired');
+
+  const handleFilterButton = (buttonCategory: string) => {
+    setIsConfirmModalOpen(true);
+    setModalCategory(buttonCategory);
+  };
+
+  const handleDeleteExpired = useMutation({
+    mutationFn: async (profile_id?: string) => {
+      const today = new Date().toISOString().split('T')[0];
+      const { error } = await supabase
+        .from('bookmark')
+        .delete()
+        .eq('profile_id', profile_id)
+        .lt('expiration_date', today);
+      if (error) throw new Error('북마크 삭제 실패');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+      setIsConfirmModalOpen(false);
+    },
+  });
+
+  const handleDeleteAllBookmarks = useMutation({
+    mutationFn: async (profile_id?: string) => {
+      const { error } = await supabase
+        .from('bookmark')
+        .delete()
+        .eq('profile_id', profile_id);
+      if (error) throw new Error('북마크 삭제 실패');
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+      setIsConfirmModalOpen(false);
+    },
+  });
 
   return (
     <div className='response-page-padding pt-8'>
@@ -14,9 +59,37 @@ function Bookmark() {
         <header className='flex justify-between'>
           <h1 className='page-title'>관심공고</h1>
           <div className='flex gap-2'>
-            <button className='post-setting-button'>마감된 공고 해제</button>
-            <button className='post-setting-button'>전체 해제</button>
+            <button
+              onClick={() => handleFilterButton('expired')}
+              className='post-setting-button'
+            >
+              마감된 공고 해제
+            </button>
+            <button
+              onClick={() => handleFilterButton('all')}
+              className='post-setting-button'
+            >
+              전체 해제
+            </button>
           </div>
+          {isConfirmModalOpen && (
+            <ConfirmModal
+              setIsConfirmModalOpen={setIsConfirmModalOpen}
+              iconName={'bookmark'}
+              confirmText={
+                modalCategory === 'expired'
+                  ? '마감된 공고를 삭제하시겠습니까?'
+                  : '북마크를 모두 해제하시겠습니까?'
+              }
+              rightText={'해제'}
+              rightHandle={
+                modalCategory === 'expired'
+                  ? handleDeleteExpired
+                  : handleDeleteAllBookmarks
+              }
+              profile_id={profile_id}
+            />
+          )}
         </header>
         <JobPostList
           posts={bookmarkedPosts}

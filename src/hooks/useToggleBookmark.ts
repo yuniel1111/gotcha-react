@@ -15,6 +15,7 @@ const addFetch = async (
     {
       post_id: postId,
       profile_id,
+      expiration_date: post.deadline,
       post: JSON.parse(JSON.stringify({ ...post, isBookmarked: true })),
     },
   ]);

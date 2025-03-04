@@ -97,11 +97,13 @@
     font-size: 0.875rem;
     color: #696969;
   }
-  .post-setting-button:active {
-    border-color: #4280ef;
-    color: #4280ef;
-  }
   .post-setting-button:hover {
     background-color: #f3f4f6;
+  }
+  .post-setting-button:active {
+    background-color: #ffffff;
+    border-color: #4280ef;
+    color: #4280ef;
+    font-weight: bold;
   }
 }

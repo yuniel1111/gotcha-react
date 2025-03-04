@@ -18,7 +18,7 @@ interface UseBookmarkPostType {
 
 const DEFAULT_QUERY_OPTION: QueryType = {
   staleTime: 0,
-  // cacheTime: 0,
+  cacheTime: 0,
 };
 
 const fetchPost = async (
