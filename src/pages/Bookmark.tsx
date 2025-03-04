@@ -7,30 +7,27 @@ import { supabase } from '../api/supabase/supabaseClient';
 import { QueryClient, useMutation } from '@tanstack/react-query';
 
 function Bookmark() {
-  console.log('BOokmark Rendering');
   const infinitePageSize = 5;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useBookmarkPost({ queryKey: 'bookmark', pageSize: infinitePageSize });
   const bookmarkedPosts = data ? data.pages.flat() : [];
 
-  const profile_id = useProfileIdTestStore((state) => state.profile_id);
   const queryClient = new QueryClient();
+  const profile_id = useProfileIdTestStore((state) => state.profile_id);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [modalCategory, setModalCategory] = useState('expired');
 
-  const handleFilterButton = (buttonCategory: string) => {
-    setIsConfirmModalOpen(true);
-    setModalCategory(buttonCategory);
-  };
-
   const handleDeleteExpired = useMutation({
     mutationFn: async (profile_id?: string) => {
+      if (!profile_id) return;
+
       const today = new Date().toISOString().split('T')[0];
       const { error } = await supabase
         .from('bookmark')
         .delete()
         .eq('profile_id', profile_id)
         .lt('expiration_date', today);
+
       if (error) throw new Error('북마크 삭제 실패');
     },
     onSuccess: () => {
@@ -41,10 +38,13 @@ function Bookmark() {
 
   const handleDeleteAllBookmarks = useMutation({
     mutationFn: async (profile_id?: string) => {
+      if (!profile_id) return;
+
       const { error } = await supabase
         .from('bookmark')
         .delete()
         .eq('profile_id', profile_id);
+
       if (error) throw new Error('북마크 삭제 실패');
     },
     onSuccess: () => {
@@ -52,6 +52,11 @@ function Bookmark() {
       setIsConfirmModalOpen(false);
     },
   });
+
+  const handleFilterButton = (buttonCategory: string) => {
+    setIsConfirmModalOpen(true);
+    setModalCategory(buttonCategory);
+  };
 
   return (
     <div className='response-page-padding pt-8'>
@@ -82,11 +87,12 @@ function Bookmark() {
                   : '북마크를 모두 해제하시겠습니까?'
               }
               rightText={'해제'}
-              rightHandle={
+              rightHandle={(profile_id) => {
+                if (!profile_id) return;
                 modalCategory === 'expired'
-                  ? handleDeleteExpired
-                  : handleDeleteAllBookmarks
-              }
+                  ? handleDeleteExpired.mutate(profile_id)
+                  : handleDeleteAllBookmarks.mutate(profile_id);
+              }}
               profile_id={profile_id}
             />
           )}

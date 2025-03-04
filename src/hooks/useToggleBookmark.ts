@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '../api/supabase/supabaseClient';
 import { GotchaPostType } from '../types/gotchaPostType';
-import { useEffect } from 'react';
-import { useNavigateStore } from '../stores/useNavigateStore';
 
 const addFetch = async (
   post_id: string,
