@@ -4,15 +4,15 @@ import JobPostList from '../components/Post/JobPostList';
 import { useBookmarkPost } from '../hooks/useBookmarkPost';
 import { useProfileIdTestStore } from '../stores/useProfileIdTestStore';
 import { supabase } from '../api/supabase/supabaseClient';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 function Bookmark() {
   const infinitePageSize = 5;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useBookmarkPost({ queryKey: 'bookmark', pageSize: infinitePageSize });
+    useBookmarkPost({ queryKey: 'bookmarks', pageSize: infinitePageSize });
   const bookmarkedPosts = data ? data.pages.flat() : [];
 
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   const profile_id = useProfileIdTestStore((state) => state.profile_id);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [modalCategory, setModalCategory] = useState('expired');
@@ -31,7 +31,7 @@ function Bookmark() {
       if (error) throw new Error('북마크 삭제 실패');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
       setIsConfirmModalOpen(false);
     },
   });
@@ -48,7 +48,7 @@ function Bookmark() {
       if (error) throw new Error('북마크 삭제 실패');
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmark'] });
+      queryClient.invalidateQueries({ queryKey: ['bookmarks'] });
       setIsConfirmModalOpen(false);
     },
   });

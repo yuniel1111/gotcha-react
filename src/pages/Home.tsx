@@ -19,7 +19,8 @@ function Home() {
   const [sortLabel, setSortLabel] = useState('최신순');
   const infinitePageSize = 5;
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useJobPost(
-    `posts-${sortLabel}`,
+    // `posts-${sortLabel}`,
+    'posts',
     sortLabelList[sortLabel][0],
     sortLabelList[sortLabel][1],
     infinitePageSize,
