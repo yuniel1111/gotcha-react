@@ -4,6 +4,7 @@ export interface PlatformPostType {
   posting_date: string | null;
   expiration_date: string;
   content: Json | null;
+  isBookmarked: boolean;
 }
 
 export interface GoyongType {

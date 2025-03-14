@@ -35,7 +35,7 @@ export const transformPostFormat = (
       education:
         content.position['required-education-level'].name || DEFAULT_VALUE,
       post_url: content.url || DEFAULT_VALUE,
-      isBookmarked: false,
+      isBookmarked: platformPost?.isBookmarked || false,
     };
   }
 

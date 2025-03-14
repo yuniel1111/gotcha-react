@@ -29,7 +29,7 @@ function JobPostCard({ post, companyImage }: JobPostCardPropsType) {
 
   useEffect(() => {
     if (post?.deadline) {
-      const deadlineDate = new Date(post.deadline.toLocaleDateString());
+      const deadlineDate = new Date(post.deadline);
       const todayWithoutTimeDate = new Date(new Date().toLocaleDateString());
       const diff = Math.floor(
         (deadlineDate.getTime() - todayWithoutTimeDate.getTime()) /

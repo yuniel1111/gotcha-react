@@ -4,22 +4,28 @@ import { twMerge } from 'tailwind-merge';
 import { useToggleBookmark } from '../../hooks/useToggleBookmark';
 import { GotchaPostType } from '../../types/gotchaPostType';
 import { useProfileIdTestStore } from '../../stores/useProfileIdTestStore';
+import ConfirmModal from '../Common/ConfirmModal';
+import { useNavigateStore } from '../../stores/useNavigateStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
   isHovered: boolean;
-  isExpired: boolean;
+  isExpired?: boolean;
 }
 
 function JobPostBookmarkButton({
   post,
   isHovered,
-  isExpired,
+  // isExpired,
 }: JobPostBookmarkButtonPropsType) {
   // 임시
   const profile_id = useProfileIdTestStore((state) => state.profile_id);
 
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const currentPage = useNavigateStore((state) => state.isActive);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
   const { addMutation, deleteMutation } = useToggleBookmark(
     post.post_id,
     profile_id,
@@ -29,26 +35,48 @@ function JobPostBookmarkButton({
   const handleBookmarked = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    if (isBookmarked) {
-      try {
-        await deleteMutation.mutateAsync();
-        setIsBookmarked(false);
-      } catch (error) {
-        console.error('북마크 삭제 중 에러:', error);
-      }
+    if (currentPage[1]) {
+      setIsConfirmModalOpen(!isConfirmModalOpen);
     } else {
-      try {
-        await addMutation.mutateAsync();
-        setIsBookmarked(true);
-      } catch (error) {
-        console.error('북마크 추가 중 에러:', error);
+      if (isBookmarked) {
+        try {
+          setIsBookmarked(false);
+          await deleteMutation.mutateAsync();
+        } catch (error) {
+          console.error('북마크 삭제 중 에러:', error);
+        }
+      } else {
+        try {
+          setIsBookmarked(true);
+          await addMutation.mutateAsync();
+        } catch (error) {
+          console.error('북마크 추가 중 에러:', error);
+        }
       }
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const handleUnbookmark = async () => {
+    try {
+      setIsBookmarked(false);
+      await deleteMutation.mutateAsync();
+    } catch (error) {
+      console.error('북마크 삭제 중 에러:', error);
+    }
+
+    await queryClient.invalidateQueries({
+      queryKey: ['bookmark'],
+    });
+
+    setIsConfirmModalOpen(false);
+  };
+
   return (
     <>
-      {!isExpired && (
+      {true && (
+        // {!isExpired && (
         <button
           className={twMerge(
             'absolute right-0 top-0 cursor-pointer p-2.5 text-[1.5rem]',
@@ -62,6 +90,16 @@ function JobPostBookmarkButton({
             <FaBookmark className='text-brand-sub' />
           ) : (
             <FaRegBookmark className='text-brand-white' />
+          )}
+
+          {isConfirmModalOpen && (
+            <ConfirmModal
+              setIsConfirmModalOpen={setIsConfirmModalOpen}
+              iconName={'bookmark'}
+              confirmText={'북마크를 해제하시겠습니까?'}
+              rightText={'해제'}
+              rightHandle={handleUnbookmark}
+            />
           )}
         </button>
       )}
