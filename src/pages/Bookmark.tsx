@@ -5,6 +5,7 @@ import { useBookmarkPost } from '../hooks/useBookmarkPost';
 import { useProfileIdTestStore } from '../stores/useProfileIdTestStore';
 import { supabase } from '../api/supabase/supabaseClient';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import EmptyBookmark from '../components/Bookmark/EmptyBookmark';
 
 function Bookmark() {
   const infinitePageSize = 5;
@@ -57,6 +58,10 @@ function Bookmark() {
     setIsConfirmModalOpen(true);
     setModalCategory(buttonCategory);
   };
+
+  if (!bookmarkedPosts || bookmarkedPosts.length === 0) {
+    return <EmptyBookmark />;
+  }
 
   return (
     <div className='response-page-padding pt-8'>

@@ -11,13 +11,13 @@ import { useQueryClient } from '@tanstack/react-query';
 interface JobPostBookmarkButtonPropsType {
   post: GotchaPostType;
   isHovered: boolean;
-  isExpired: boolean;
+  isExpired?: boolean;
 }
 
 function JobPostBookmarkButton({
   post,
   isHovered,
-  isExpired,
+  // isExpired,
 }: JobPostBookmarkButtonPropsType) {
   // 임시
   const profile_id = useProfileIdTestStore((state) => state.profile_id);

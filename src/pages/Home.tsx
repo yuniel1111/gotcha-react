@@ -4,6 +4,7 @@ import SortDropdown from '../components/Post/SortDropdown';
 import BannerSlider from '../components/Post/BannerSlider';
 import JobPostList from '../components/Post/JobPostList';
 import { useJobPost } from '../hooks/useJobPost';
+import EmptyJobPost from '../components/Post/EmptyJobPost';
 // import { supabase } from '../api/supabase/supabaseClient';
 // import { useUserStore } from '../stores/useUserStore';
 
@@ -26,6 +27,10 @@ function Home() {
     infinitePageSize,
   );
   const posts = data ? data.pages.flat() : [];
+
+  if (!posts || posts.length === 0) {
+    return <EmptyJobPost />;
+  }
 
   return (
     <div className='response-page-padding'>
