@@ -3,6 +3,7 @@ import { PlatformPostType } from '../types/platformPostType';
 import { transformPostFormat } from '../utils/transformPostFormat';
 import { GotchaPostType } from '../types/gotchaPostType';
 import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useProfileIdTestStore } from '../stores/useProfileIdTestStore';
 
 interface QueryType {
   staleTime?: number;
@@ -23,12 +24,31 @@ const transformPosts = (posts: PlatformPostType[]): GotchaPostType[] => {
   return transformed;
 };
 
+const fetchBookmarkedPostId = async (profile_id: string) => {
+  const { data, error } = await supabase
+    .from('bookmark')
+    .select('post_id')
+    .eq('profile_id', profile_id);
+
+  if (error) {
+    throw new Error(`Error fetching posts: ${error.message}`);
+  }
+
+  return new Set(data.map((bookmark) => bookmark.post_id));
+};
+
 const fetchPost = async (
+  profile_id: string,
   sortLabel: string,
   sortOrder: boolean,
   pageParam: number,
   pageSize: number,
 ) => {
+  if (!profile_id) {
+    throw new Error('Profile ID is required');
+  }
+  const postIdList = await fetchBookmarkedPostId(profile_id);
+
   const { data, error } = await supabase
     .from('post' as any)
     .select('*')
@@ -39,7 +59,14 @@ const fetchPost = async (
     throw new Error(`Error fetching posts: ${error.message}`);
   }
 
-  return data ? transformPosts(data) : [];
+  const posts = data
+    ? data.map((post) => ({
+        ...post,
+        isBookmarked: postIdList.has(post.post_id),
+      }))
+    : [];
+
+  return transformPosts(posts);
 };
 
 export const useJobPost = (
@@ -49,6 +76,7 @@ export const useJobPost = (
   pageSize: number,
   queryOption: QueryType = DEFAULT_QUERY_OPTION,
 ) => {
+  const profile_id = useProfileIdTestStore((state) => state.profile_id);
   const {
     data,
     error,
@@ -58,9 +86,15 @@ export const useJobPost = (
     isFetchingNextPage,
     status,
   } = useSuspenseInfiniteQuery<GotchaPostType[]>({
-    queryKey: [queryKey, sortLabel, sortOrder, pageSize],
+    queryKey: [queryKey, profile_id, sortLabel, sortOrder, pageSize],
     queryFn: ({ pageParam = 1 }) =>
-      fetchPost(sortLabel, sortOrder, pageParam as number, pageSize),
+      fetchPost(
+        profile_id,
+        sortLabel,
+        sortOrder,
+        pageParam as number,
+        pageSize,
+      ),
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
       return lastPage.length < pageSize ? undefined : allPages.length + 1;

@@ -19,7 +19,7 @@ const enableMocking = async () => {
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={true} />
       <RouterProvider
         router={router}
         future={{

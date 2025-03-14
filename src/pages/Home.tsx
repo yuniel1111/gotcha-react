@@ -3,6 +3,8 @@ import { useState } from 'react';
 import SortDropdown from '../components/Post/SortDropdown';
 import BannerSlider from '../components/Post/BannerSlider';
 import JobPostList from '../components/Post/JobPostList';
+import { useJobPost } from '../hooks/useJobPost';
+import EmptyJobPost from '../components/Post/EmptyJobPost';
 // import { supabase } from '../api/supabase/supabaseClient';
 // import { useUserStore } from '../stores/useUserStore';
 
@@ -16,6 +18,19 @@ function Home() {
     마감순: ['expiration_date', true],
   };
   const [sortLabel, setSortLabel] = useState('최신순');
+  const infinitePageSize = 5;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useJobPost(
+    // `posts-${sortLabel}`,
+    'posts',
+    sortLabelList[sortLabel][0],
+    sortLabelList[sortLabel][1],
+    infinitePageSize,
+  );
+  const posts = data ? data.pages.flat() : [];
+
+  if (!posts || posts.length === 0) {
+    return <EmptyJobPost />;
+  }
 
   return (
     <div className='response-page-padding'>
@@ -29,7 +44,12 @@ function Home() {
             sortLabelList={sortLabelList}
           />
         </header>
-        <JobPostList sortLabel={sortLabel} sortLabelList={sortLabelList} />
+        <JobPostList
+          posts={posts}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+        />
       </main>
     </div>
   );
